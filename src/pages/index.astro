@@ -1,0 +1,2519 @@
+---
+import Layout from '../layouts/Layout.astro';
+---
+
+<Layout title="Framework Pranikah - Diskusi Pra-Nikah yang Adil">
+	<nav class="navbar">
+		<div class="container">
+			<div class="nav-brand">
+				<h1>Framework Pranikah</h1>
+				<p class="tagline">Tugas → Tanggung Jawab → Hak</p>
+			</div>
+			<div class="nav-right">
+				<ul class="nav-links">
+					<li><a href="#intro">Pengantar</a></li>
+					<li><a href="#principles">Prinsip</a></li>
+					<li><a href="#models">Model</a></li>
+					<li><a href="#cases">Studi Kasus</a></li>
+					<li><a href="#discussion">Diskusi</a></li>
+					<li><a href="#template">Template</a></li>
+				</ul>
+				<!-- Auth Buttons in Navbar -->
+				<div id="navbar-auth">
+					<button id="navbar-login-btn" class="btn btn-primary btn-sm" >
+						🔐 Masuk
+					</button>
+					<div id="navbar-user-menu" class="user-menu" style="display: none;">
+						<button id="user-menu-trigger" class="user-menu-trigger">
+							<img id="navbar-user-avatar" src="" alt="User" class="navbar-avatar" />
+						</button>
+						<div id="user-dropdown" class="user-dropdown">
+							<div class="dropdown-header">
+								<img id="dropdown-avatar" src="" alt="User" class="dropdown-avatar" />
+								<div class="dropdown-info">
+									<p class="dropdown-name" id="dropdown-name"></p>
+									<p class="dropdown-email" id="dropdown-email"></p>
+								</div>
+							</div>
+							<div class="dropdown-divider"></div>
+							<button id="dropdown-logout" class="dropdown-item">
+								🚪 Logout
+							</button>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</nav>
+
+	<!-- Login Modal -->
+	<div id="login-modal" class="modal">
+		<div class="modal-overlay"></div>
+		<div class="modal-content">
+			<button id="close-modal" class="modal-close">✕</button>
+			<div class="modal-body">
+				<h2>🔐 Login untuk Menyimpan Progress</h2>
+				<p>Login dengan Google untuk menyimpan diskusi pra-nikah Anda dan berbagi dengan pasangan.</p>
+				<button id="modal-google-login-btn" class="btn btn-primary btn-large">
+					<svg width="20" height="20" viewBox="0 0 18 18" style="margin-right: 10px;">
+						<path fill="#4285F4" d="M17.64 9.2c0-.637-.057-1.251-.164-1.84H9v3.481h4.844c-.209 1.125-.843 2.078-1.796 2.717v2.258h2.908c1.702-1.567 2.684-3.874 2.684-6.615z"/>
+						<path fill="#34A853" d="M9 18c2.43 0 4.467-.806 5.956-2.18l-2.908-2.259c-.806.54-1.837.86-3.048.86-2.344 0-4.328-1.584-5.036-3.711H.957v2.332C2.438 15.983 5.482 18 9 18z"/>
+						<path fill="#FBBC05" d="M3.964 10.71c-.18-.54-.282-1.117-.282-1.71s.102-1.17.282-1.71V4.958H.957C.347 6.173 0 7.548 0 9s.348 2.827.957 4.042l3.007-2.332z"/>
+						<path fill="#EA4335" d="M9 3.58c1.321 0 2.508.454 3.44 1.345l2.582-2.58C13.463.891 11.426 0 9 0 5.482 0 2.438 2.017.957 4.958L3.964 7.29C4.672 5.163 6.656 3.58 9 3.58z"/>
+					</svg>
+					Login dengan Google
+				</button>
+				<p class="auth-note">
+					Data Anda akan disimpan secara aman di Firebase Firestore dan hanya dapat diakses oleh Anda dan orang yang Anda izinkan.
+				</p>
+			</div>
+		</div>
+	</div>
+
+	<main>
+		<!-- Hero Section -->
+		<section id="intro" class="hero">
+			<div class="container">
+				<div class="hero-content">
+					<h1>Prinsip Hidup Pasangan & Framework Diskusi Pra-Nikah</h1>
+					<p class="lead">
+						Kerangka praktis untuk pasangan yang ingin struktur tradisional, patriarki fungsional, 
+						atau hybrid tanpa opresi. Berbasis riset dan prinsip keadilan.
+					</p>
+					<div class="cta-buttons">
+						<a href="#models" class="btn btn-primary">Pilih Model Keluarga</a>
+						<a href="#discussion" class="btn btn-secondary">Mulai Diskusi</a>
+					</div>
+				</div>
+				<div class="hero-info">
+					<div class="info-card">
+						<h3>📊 Berbasis Data</h3>
+						<p>Menggunakan temuan BPS 2024 dan riset akademik terkini</p>
+					</div>
+					<div class="info-card">
+						<h3>🔄 Adaptif</h3>
+						<p>Review berkala setiap 3 bulan atau perubahan fase hidup</p>
+					</div>
+					<div class="info-card">
+						<h3>⚖️ Adil</h3>
+						<p>Hak muncul dari beban nyata yang dipikul, bukan tuntutan</p>
+					</div>
+				</div>
+			</div>
+		</section>
+
+		<!-- Usage Note -->
+		<section class="usage-note">
+			<div class="container">
+				<div class="note-box">
+					<h3>📋 Catatan Pemakaian</h3>
+					<ul>
+						<li>Ini <strong>bukan "aturan agama"</strong> atau "ideologi modern". Ini kerangka praktis agar struktur apa pun tetap adil dan stabil.</li>
+						<li><strong>Cara pakai:</strong> Pilih 1 sesi/minggu, bahas 1 topik, tulis kesepakatan 1 halaman.</li>
+						<li><strong>Review:</strong> Setiap 3 bulan atau saat fase hidup berubah (hamil, pindah kerja, krisis ekonomi).</li>
+					</ul>
+				</div>
+			</div>
+		</section>
+
+		<!-- Framework Management (Hidden, only for logged in users) -->
+		<div id="framework-management" style="display: none;">
+			<section class="section">
+				<div class="container">
+					<div class="framework-card">
+						<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+							<h3>📝 Kelola Diskusi Anda</h3>
+							<div id="sync-status" class="sync-status">
+								<span class="status-dot"></span>
+								<span class="status-text">Offline</span>
+							</div>
+						</div>
+						<div class="framework-actions">
+							<button id="create-new-framework-btn" class="btn btn-primary">
+								Mulai Diskusi Baru
+							</button>
+							<div class="or-divider">atau</div>
+							<div class="share-link-section">
+								<h4>Bagikan Link dengan Pasangan:</h4>
+								<div class="share-link-container">
+									<input type="text" id="share-link-input" readonly class="share-link-input" />
+									<button id="copy-link-btn" class="btn btn-outline btn-sm">📋 Salin</button>
+								</div>
+								<p class="share-note">Kirim link ini kepada pasangan Anda agar mereka bisa berkolaborasi.</p>
+							</div>
+						</div>
+					</div>
+				</div>
+			</section>
+		</div>
+
+		<!-- 10 Principles -->
+		<section id="principles" class="section">
+			<div class="container">
+				<h2 class="section-title">10 Prinsip Hidup Pasangan</h2>
+				<p class="section-intro">Prinsip operasional yang ringkas dan mudah diterapkan dalam kehidupan sehari-hari.</p>
+				
+				<div class="principles-grid">
+					<div class="principle-card">
+						<div class="principle-number">1</div>
+						<h3>Tugas → Tanggung jawab → Hak</h3>
+						<p>Hak tidak dituntut duluan. Hak muncul sebagai kompensasi dari beban nyata yang dipikul dan risiko yang diambil.</p>
+					</div>
+
+					<div class="principle-card">
+						<div class="principle-number">2</div>
+						<h3>Otoritas harus "dibayar" dengan beban</h3>
+						<p>Siapa memegang keputusan, dia memegang konsekuensi: waktu, energi, uang, reputasi, dan risiko.</p>
+					</div>
+
+					<div class="principle-card">
+						<div class="principle-number">3</div>
+						<h3>Pembatasan harus "dibayar" dengan perlindungan</h3>
+						<p>Jika satu pihak dibatasi (mobilitas, karier, aktivitas sosial), pihak lain wajib membayar dengan perlindungan nyata.</p>
+					</div>
+
+					<div class="principle-card">
+						<div class="principle-number">4</div>
+						<h3>Domain punya pemilik, tapi keluarga punya veto keselamatan</h3>
+						<p>Setiap domain ada PIC (person in charge). Tapi jika menyangkut keselamatan, keputusan wajib kolektif.</p>
+					</div>
+
+					<div class="principle-card">
+						<div class="principle-number">5</div>
+						<h3>Transparansi adalah bentuk cinta yang paling praktis</h3>
+						<p>Transparansi uang, utang, aktivitas berisiko, dan relasi sosial adalah "pagar" agar otoritas tidak menjadi dominasi.</p>
+					</div>
+
+					<div class="principle-card">
+						<div class="principle-number">6</div>
+						<h3>Setiap peran wajib punya "mode krisis"</h3>
+						<p>Saat sakit, kehilangan kerja, hamil, atau bencana, siapa pegang keputusan dan bagaimana prosedurnya harus jelas.</p>
+					</div>
+
+					<div class="principle-card">
+						<div class="principle-number">7</div>
+						<h3>"Fair" ≠ "50:50"</h3>
+						<p>Adil menurut kapasitas & fase hidup. Pembagian kerja mengikuti kapasitas fisik/mental, jam kerja, kesehatan, dan situasi ekonomi.</p>
+					</div>
+
+					<div class="principle-card">
+						<div class="principle-number">8</div>
+						<h3>Tidak ada "kerja tak terlihat" yang dianggap gratis</h3>
+						<p>Pengasuhan, mental load, mengatur rumah—itu kerja. Kalau tidak dihitung, akan jadi sumber konflik.</p>
+					</div>
+
+					<div class="principle-card">
+						<div class="principle-number">9</div>
+						<h3>Kritik adalah alat perawatan, bukan pembangkangan</h3>
+						<p>Sistem apa pun runtuh saat koreksi dianggap penghinaan.</p>
+					</div>
+
+					<div class="principle-card">
+						<div class="principle-number">10</div>
+						<h3>Review berkala lebih penting daripada aturan sempurna</h3>
+						<p>Kesepakatan yang bisa direvisi akan lebih stabil daripada aturan kaku yang tidak adaptif.</p>
+					</div>
+				</div>
+			</div>
+		</section>
+
+		<!-- 4 Models -->
+		<section id="models" class="section bg-alt">
+			<div class="container">
+				<h2 class="section-title">4 Model Struktur Keluarga</h2>
+				<p class="section-intro">Pilih salah satu sebagai titik awal, lalu sesuaikan dengan kondisi nyata. Model dapat berubah seiring waktu.</p>
+				
+				<div class="models-container">
+					<div class="model-card" data-model="1">
+						<div class="model-header">
+							<h3>Model 1: Tradisional Fungsional</h3>
+							<span class="model-badge">Klasik</span>
+						</div>
+						<ul class="model-features">
+							<li><strong>Suami:</strong> PIC eksternal (keamanan, krisis, nafkah utama)</li>
+							<li><strong>Istri:</strong> PIC internal (rumah, anak, budaya keluarga)</li>
+							<li><strong>Keputusan strategis:</strong> Bersama</li>
+						</ul>
+						<button class="btn btn-outline model-btn" data-model="1">Pilih Model Ini</button>
+					</div>
+
+					<div class="model-card" data-model="2">
+						<div class="model-header">
+							<h3>Model 2: Hybrid Kapasitas</h3>
+							<span class="model-badge recommended">Fleksibel</span>
+						</div>
+						<ul class="model-features">
+							<li><strong>PIC domain:</strong> Mengikuti kapasitas & kondisi (bisa berganti)</li>
+							<li><strong>Keputusan strategis:</strong> Bersama</li>
+							<li><strong>Mode krisis:</strong> Ditentukan sesuai situasi</li>
+						</ul>
+						<button class="btn btn-outline model-btn" data-model="2">Pilih Model Ini</button>
+					</div>
+
+					<div class="model-card" data-model="3">
+						<div class="model-header">
+							<h3>Model 3: Dual-Leadership</h3>
+							<span class="model-badge">Setara</span>
+						</div>
+						<ul class="model-features">
+							<li><strong>Kedua pihak:</strong> Memimpin domain berbeda</li>
+							<li><strong>Veto keselamatan:</strong> Untuk keduanya</li>
+							<li><strong>Komunikasi:</strong> Intensif dan transparan</li>
+						</ul>
+						<button class="btn btn-outline model-btn" data-model="3">Pilih Model Ini</button>
+					</div>
+
+					<div class="model-card" data-model="4">
+						<div class="model-header">
+							<h3>Model 4: Rotasi Peran</h3>
+							<span class="model-badge">Sementara</span>
+						</div>
+						<ul class="model-features">
+							<li><strong>Cocok untuk:</strong> Hamil, anak 0-2 tahun, sekolah, bangun bisnis</li>
+							<li><strong>Peran:</strong> Bergeser sementara lalu kembali</li>
+							<li><strong>Durasi:</strong> Sesuai fase hidup</li>
+						</ul>
+						<button class="btn btn-outline model-btn" data-model="4">Pilih Model Ini</button>
+					</div>
+				</div>
+
+				<div id="model-details" class="model-details hidden">
+					<h3>Detail Model yang Dipilih</h3>
+					<div id="model-content"></div>
+					<div class="model-actions">
+						<a href="#discussion" class="btn btn-primary">Lanjut ke Diskusi</a>
+						<button class="btn btn-secondary" id="reset-model">Ganti Model</button>
+					</div>
+				</div>
+			</div>
+		</section>
+
+		<!-- Case Studies -->
+		<section id="cases" class="section">
+			<div class="container">
+				<h2 class="section-title">Studi Kasus & Temuan Riset</h2>
+				<p class="section-intro">Berdasarkan data BPS 2024 dan penelitian terkini tentang dinamika keluarga Indonesia.</p>
+				
+				<div class="cases-grid">
+					<div class="case-card">
+						<div class="case-badge">BPS 2024</div>
+						<h3>Beban Ganda Perempuan Breadwinner</h3>
+						<p class="case-stat">14,37% pekerja perempuan menjadi tulang punggung ekonomi keluarga. 84,39% menjalani beban ganda.</p>
+						<div class="case-detail">
+							<h4>Realitas:</h4>
+							<p>Istri yang bekerja sering menanggung "shift kedua" setelah pulang kantor—mengurus rumah, anak, dan kebutuhan keluarga tanpa redistribusi tugas.</p>
+							<h4>Pertanyaan Diskusi:</h4>
+							<ul>
+								<li>Jika istri bekerja penuh waktu, bagaimana pembagian tugas domestik agar adil?</li>
+								<li>Apa kompensasi yang wajar untuk pihak yang menanggung beban ganda?</li>
+								<li>Kapan dan bagaimana meminta bantuan eksternal (ART, daycare)?</li>
+							</ul>
+						</div>
+					</div>
+
+					<div class="case-card">
+						<div class="case-badge">Administrasi</div>
+						<h3>Status Kepala Keluarga vs Realitas Ekonomi</h3>
+						<p class="case-stat">40,77% breadwinner perempuan masih tercatat sebagai "istri" di KK, bukan kepala rumah tangga.</p>
+						<div class="case-detail">
+							<h4>Masalah:</h4>
+							<p>Bias patriarki administratif: hak dan otoritas tetap diakui kepada suami meski beban ekonomi dipegang istri.</p>
+							<h4>Pertanyaan Diskusi:</h4>
+							<ul>
+								<li>Apakah status administratif harus mengikuti realitas ekonomi?</li>
+								<li>Bagaimana menentukan "kepala keluarga fungsional" di rumah tangga kita?</li>
+								<li>Apa hak yang muncul dari menanggung nafkah mayoritas?</li>
+							</ul>
+						</div>
+					</div>
+
+					<div class="case-card">
+						<div class="case-badge">Riset UI</div>
+						<h3>Tiga Pola Kemitraan</h3>
+						<p class="case-stat">Penelitian FISIP UI menemukan 3 pola: Head-Complement, Senior-Junior Partner, Equal Partner.</p>
+						<div class="case-detail">
+							<h4>Temuan:</h4>
+							<ul>
+								<li><strong>Head-Complement:</strong> Suami dominan, istri pelengkap (rawan frustrasi tersembunyi)</li>
+								<li><strong>Senior-Junior:</strong> Suami pemimpin, istri keputusan teknis (perlu komunikasi intensif)</li>
+								<li><strong>Equal Partner:</strong> Kepemimpinan sejajar (paling adaptif untuk istri bekerja)</li>
+							</ul>
+							<h4>Pertanyaan Diskusi:</h4>
+							<ul>
+								<li>Pola mana yang paling cocok untuk situasi kita?</li>
+								<li>Bagaimana memastikan pola yang dipilih tidak menimbulkan ketidakadilan?</li>
+							</ul>
+						</div>
+					</div>
+
+					<div class="case-card">
+						<div class="case-badge">Psikologi</div>
+						<h3>Tekanan Gaji & Ego Maskulin</h3>
+						<p class="case-stat">Riset 15 tahun: Suami nyaman saat istri kontribusi ≤40% pendapatan. Merasa tertekan jika lebih.</p>
+						<div class="case-detail">
+							<h4>Fenomena:</h4>
+							<p>Maskulinitas defisit: suami merasa terancam identitasnya sebagai pencari nafkah saat istri berpenghasilan lebih tinggi.</p>
+							<h4>Pertanyaan Diskusi:</h4>
+							<ul>
+								<li>Bagaimana menjaga harga diri suami tanpa mengurangi hak istri yang berpenghasilan lebih?</li>
+								<li>Apa bentuk apresiasi timbal balik yang perlu dijaga?</li>
+								<li>Bagaimana mengantisipasi perubahan situasi ekonomi di masa depan?</li>
+							</ul>
+						</div>
+					</div>
+
+					<div class="case-card">
+						<div class="case-badge">Krisis</div>
+						<h3>Mode Krisis yang Tidak Siap</h3>
+						<p class="case-stat">Banyak konflik rumah tangga memuncak saat PHK, sakit berat, atau komplikasi kehamilan.</p>
+						<div class="case-detail">
+							<h4>Solusi:</h4>
+							<p>Pasangan yang menyusun SOP krisis terstruktur lebih tenang dan terhindar dari pertengkaran saat darurat.</p>
+							<h4>Pertanyaan Diskusi:</h4>
+							<ul>
+								<li>Jika terjadi kehilangan pekerjaan, siapa mengambil peran apa?</li>
+								<li>Bagaimana prosedur 24 jam pertama saat krisis kesehatan?</li>
+								<li>Siapa kontak darurat dan siapa berhak ambil keputusan medis?</li>
+							</ul>
+						</div>
+					</div>
+				</div>
+			</div>
+		</section>
+
+		<!-- Discussion Framework -->
+		<section id="discussion" class="section bg-alt">
+			<div class="container">
+				<h2 class="section-title">Framework Diskusi Pra-Nikah</h2>
+				<p class="section-intro">10 topik penting yang wajib dibahas sebelum menikah. Jawab sendiri dulu, tukar jawaban, lalu diskusikan.</p>
+				
+				<div class="discussion-topics">
+					<details class="topic-accordion">
+						<summary class="topic-header">
+							<span class="topic-number">D1</span>
+							<h3>Nilai, Tujuan, dan "Mengapa Menikah?"</h3>
+						</summary>
+						<div class="topic-content">
+							<div class="research-alert warning">
+								<h4>⚠️ Mengapa Ini Penting?</h4>
+								<p><strong>Data BPS 2024:</strong> Banyak keluarga terpukul ketika pencari nafkah utama kehilangan pekerjaan tanpa rencana cadangan. Tanpa kesepakatan nilai dan prioritas, krisis ekonomi atau hidup akan memecah keluarga karena tidak ada pijakan bersama.</p>
+								<p><strong>Pertanyaan ini mencegah:</strong> Konflik saat krisis karena ekspektasi berbeda tentang "keberhasilan" dan prioritas keluarga.</p>
+							</div>
+							
+							<h4>Pertanyaan Utama:</h4>
+							<p>Kenapa kita menikah? Apa definisi "keluarga berhasil" bagi kita?</p>
+							
+							<h4>Follow-up:</h4>
+							<ul>
+								<li>Kalau terjadi krisis ekonomi 1-2 tahun (PHK, sakit berat), apa prioritas kita?</li>
+								<li>Apakah tujuan kita lebih condong: stabilitas, pertumbuhan karier, atau pelayanan (anak/orang tua/komunitas)?</li>
+								<li>Bagaimana pembagian peran saat istri mungkin harus bekerja karena suami PHK?</li>
+							</ul>
+							
+							<h4>Output Kesepakatan:</h4>
+							<p>3 nilai inti keluarga + 3 target 5 tahun + skenario krisis</p>
+							
+							<div class="topic-worksheet">
+								<textarea placeholder="Tulis kesepakatan kalian di sini (akan disimpan di browser)..." rows="5"></textarea>
+								<button class="btn btn-primary save-btn">Simpan Kesepakatan</button>
+							</div>
+						</div>
+					</details>
+
+					<details class="topic-accordion">
+						<summary class="topic-header">
+							<span class="topic-number">D2</span>
+							<h3>Struktur Peran: Tradisional, Hybrid, atau Campuran?</h3>
+						</summary>
+						<div class="topic-content">
+							<div class="research-alert warning">
+								<h4>⚠️ Mengapa Ini Penting?</h4>
+								<p><strong>Data BPS 2024:</strong> 84,39% perempuan breadwinner tetap mengerjakan pekerjaan rumah tangga—mengalami beban ganda. Bila memilih Model 1 (Tradisional), pastikan tugas domestik tidak selalu dibebankan pada istri saja.</p>
+								<p><strong>Riset FISIP UI:</strong> Keluarga dengan pola equal partner cenderung lebih harmonis karena beban dan hak dibagi seimbang. Pembagian peran yang terlalu kaku mudah berubah menjadi opresif.</p>
+								<p><strong>Pertanyaan ini mencegah:</strong> Beban ganda, ketidakadilan, dan kebencian tersembunyi karena peran yang tidak jelas atau tidak disepakati.</p>
+							</div>
+							
+							<h4>Pertanyaan Utama:</h4>
+							<p>Kita pilih model mana (Model 1-4) sebagai default?</p>
+							
+							<h4>Follow-up:</h4>
+							<ul>
+								<li>Batas "kepemimpinan" itu apa? (mode krisis atau sehari-hari?)</li>
+								<li>Domain apa yang menjadi PIC suami? Domain apa PIC istri?</li>
+								<li>Kapan peran boleh bergeser? (hamil, sakit, pindah kerja)</li>
+								<li>Bagaimana memastikan istri tidak mengalami beban ganda jika ia ikut bekerja?</li>
+								<li>Apakah suami siap membantu pekerjaan rumah jika istri kelelahan atau sakit?</li>
+							</ul>
+							
+							<h4>Output Kesepakatan:</h4>
+							<p>Tabel: Domain → PIC → Indikator keberhasilan → Mode krisis</p>
+							
+							<div class="topic-worksheet">
+								<textarea placeholder="Tulis kesepakatan kalian di sini..." rows="5"></textarea>
+								<button class="btn btn-primary save-btn">Simpan Kesepakatan</button>
+							</div>
+						</div>
+					</details>
+
+					<details class="topic-accordion">
+						<summary class="topic-header">
+							<span class="topic-number">D3</span>
+							<h3>Uang, Nafkah, Utang, dan Transparansi</h3>
+						</summary>
+						<div class="topic-content">
+							<div class="research-alert danger">
+								<h4>🚨 Mengapa Ini Penting?</h4>
+								<p><strong>Data BPS:</strong> Rata-rata upah perempuan Rp 2,61 juta vs. laki-laki Rp 3,37 juta. Perbedaan gaji bisa memicu tekanan maskulinitas.</p>
+								<p><strong>Studi AS (longitudinal):</strong> Suami merasa tertekan saat penghasilan istri melebihi 40% total. Di Indonesia, beberapa kasus viral menunjukkan suami marah karena merasa "kurang dihargai" saat istri lebih mapan.</p>
+								<p><strong>Transparansi krusial:</strong> Tanpa keterbukaan, muncul kecurigaan "istri bekerja untuk diri sendiri" atau "suami menyembunyikan uang".</p>
+								<p><strong>Pertanyaan ini mencegah:</strong> Konflik finansial, utang tersembunyi, dan ketidakpercayaan yang merusak pernikahan.</p>
+							</div>
+							
+							<h4>Pertanyaan Utama:</h4>
+							<p>Sistem keuangan kita: gabung, pisah, atau hybrid?</p>
+							
+							<h4>Follow-up:</h4>
+							<ul>
+								<li>Jika suami pencari nafkah utama: apa hak & akuntabilitas yang wajar?</li>
+								<li>Jika istri juga bekerja: pembagian tugas rumah berubah bagaimana?</li>
+								<li>Batas belanja tanpa diskusi berapa?</li>
+								<li>Utang: boleh/tidak? Maksimum? Untuk apa saja?</li>
+								<li>Bagaimana menghadapi perbedaan gaji tanpa melukai harga diri?</li>
+								<li>Apakah penghasilan istri dianggap bagian keuangan keluarga atau hak pribadi?</li>
+								<li>Bagaimana mengatur dana darurat untuk krisis ekonomi atau sakit?</li>
+							</ul>
+							
+							<h4>Output Kesepakatan:</h4>
+							<p>Anggaran bulanan + dana darurat + aturan utang + transparansi rekening</p>
+							
+							<div class="topic-worksheet">
+								<textarea placeholder="Tulis kesepakatan kalian di sini..." rows="5"></textarea>
+								<button class="btn btn-primary save-btn">Simpan Kesepakatan</button>
+							</div>
+						</div>
+					</details>
+
+					<details class="topic-accordion">
+						<summary class="topic-header">
+							<span class="topic-number">D4</span>
+							<h3>Kerja Rumah & "Kerja Tak Terlihat" (Mental Load)</h3>
+						</summary>
+						<div class="topic-content">
+							<div class="research-alert warning">
+								<h4>⚠️ Mengapa Ini Penting?</h4>
+								<p><strong>Data BPS 2024:</strong> Perempuan Indonesia memikul sekitar <strong>75% dari beban kerja perawatan tidak dibayar</strong> (unpaid care work). Ini mencakup mental load: mengingat jadwal imunisasi anak, merencanakan belanja, mengatur keuangan rumah, hingga mengurus hubungan keluarga besar.</p>
+								<p><strong>Cerita nyata:</strong> Ibu muda bernama Ira bekerja dari subuh di kantin, pulang malam hanya untuk kembali mengurus anak dan rumah. Suaminya tidak membantu karena menganggap "itu sudah tugas istri".</p>
+								<p><strong>Kasus viral:</strong> Seorang suami memarahi istri karena rumah berantakan padahal istrinya tertidur kelelahan setelah bekerja seharian.</p>
+								<p><strong>Pertanyaan ini mencegah:</strong> Beban mental yang tidak terlihat, kelelahan emosional, dan kebencian karena kerja domestik tidak dihargai.</p>
+							</div>
+							
+							<h4>Pertanyaan Utama:</h4>
+							<p>Apa saja pekerjaan domestik yang wajib dihitung? (Memasak, bersih-bersih, belanja, mental load, mengurus anak, administrasi, merencanakan jadwal)</p>
+							
+							<h4>Follow-up:</h4>
+							<ul>
+								<li>Siapa yang "mengatur sistem" (jadwal, stok, pembayaran, perbaikan)?</li>
+								<li>Bagaimana pembagian jika salah satu lembur atau bepergian?</li>
+								<li>Apa tanda overload dan prosedur minta bantuan? (Misal: "Aku terlalu lelah hari ini" = suami harus turun tangan)</li>
+								<li>Bisakah kita mempekerjakan bantuan eksternal (ART, daycare)?</li>
+								<li>Bagaimana menyeimbangkan beban agar istri tidak mengalami "double shift"?</li>
+							</ul>
+							
+							<h4>Output Kesepakatan:</h4>
+							<p>Daftar tugas + PIC + jadwal review mingguan + sinyal overload</p>
+							
+							<div class="topic-worksheet">
+								<textarea placeholder="Tulis kesepakatan kalian di sini..." rows="5"></textarea>
+								<button class="btn btn-primary save-btn">Simpan Kesepakatan</button>
+							</div>
+						</div>
+					</details>
+
+					<details class="topic-accordion">
+						<summary class="topic-header">
+							<span class="topic-number">D5</span>
+							<h3>Anak: Keputusan, Pengasuhan, dan Mode Krisis Reproduksi</h3>
+						</summary>
+						<div class="topic-content">
+							<div class="research-alert info">
+								<h4>👶 Mengapa Ini Penting?</h4>
+								<p><strong>Data BPS 2024:</strong> Perempuan breadwinner sering menunda punya anak karena beban ganda. Kehamilan dan menyusui membutuhkan dukungan nyata, bukan hanya ucapan.</p>
+								<p><strong>Fakta medis:</strong> Fase hamil, melahirkan, dan 0-2 tahun adalah periode kritis. Istri memerlukan istirahat, dukungan fisik, dan pengurangan beban mental.</p>
+								<p><strong>Keputusan medis anak:</strong> Harus disepakati siapa yang berhak memutuskan saat darurat (imunisasi, operasi, pemilihan dokter).</p>
+								<p><strong>Pertanyaan ini mencegah:</strong> Konflik tentang jumlah anak, waktu memiliki anak, dan siapa yang menanggung beban pengasuhan.</p>
+							</div>
+							
+							<h4>Pertanyaan Utama:</h4>
+							<p>Apakah ingin anak? Kapan? Berapa?</p>
+							
+							<h4>Follow-up:</h4>
+							<ul>
+								<li>Saat hamil & 0-2 tahun: peran siapa bergeser? Apakah suami siap menjadi PIC domestik sementara?</li>
+								<li>Siapa yang pegang keputusan medis anak? Apakah wajib consensus atau ada hak veto saat darurat?</li>
+								<li>Pendidikan & disiplin: nilai inti apa yang ingin ditanamkan?</li>
+								<li>Bagaimana menanamkan nilai kesetaraan peran kepada anak? (Agar anak menghargai ibu yang bekerja dan ayah yang mengurus rumah)</li>
+								<li>Bagaimana persiapan finansial dan mental untuk memiliki anak?</li>
+							</ul>
+							
+							<h4>Output Kesepakatan:</h4>
+							<p>"Konstitusi pengasuhan" 1 halaman (nilai, aturan, prosedur darurat)</p>
+							
+							<div class="topic-worksheet">
+								<textarea placeholder="Tulis kesepakatan kalian di sini..." rows="5"></textarea>
+								<button class="btn btn-primary save-btn">Simpan Kesepakatan</button>
+							</div>
+						</div>
+					</details>
+
+					<details class="topic-accordion">
+						<summary class="topic-header">
+							<span class="topic-number">D6</span>
+							<h3>Seks, Keintiman, dan Keadilan Emosional</h3>
+						</summary>
+						<div class="topic-content">
+							<div class="research-alert info">
+								<h4>💕 Mengapa Ini Penting?</h4>
+								<p><strong>Realitas:</strong> Kelelahan fisik dan emosional dari beban kerja dapat merusak keintiman. Pasangan perlu komunikasi jujur tentang kebutuhan dan batasan.</p>
+								<p><strong>Keintiman bukan hanya fisik:</strong> Kedekatan emosional, waktu berkualitas, dan apresiasi sehari-hari sama pentingnya.</p>
+								<p><strong>Hak menolak tanpa takut:</strong> Setiap pihak harus bisa menolak dengan alasan yang jelas tanpa merasa bersalah atau dihukum dengan silent treatment.</p>
+								<p><strong>Pertanyaan ini mencegah:</strong> Ekspektasi tidak realistis, paksaan, dan kebencian tersembunyi akibat kebutuhan emosional yang tidak terpenuhi.</p>
+							</div>
+							
+							<h4>Pertanyaan Utama:</h4>
+							<p>Apa definisi keintiman yang sehat bagi kita? Bagaimana menjaga kualitas hubungan ketika salah satu kelelahan?</p>
+							
+							<h4>Follow-up:</h4>
+							<ul>
+								<li>Frekuensi/ritme realistis (bukan ideal) sesuai kondisi kesehatan dan beban kerja</li>
+								<li>Bagaimana cara menolak tanpa menyakiti? (Aturan: boleh menolak tapi wajib beri tahu alasan)</li>
+								<li>Bagaimana memulai pembicaraan kebutuhan seksual tanpa defensif?</li>
+								<li>Bagaimana mengatur waktu intim ketika anak kecil masih sering terbangun malam?</li>
+								<li>Bagaimana cara menunjukkan kasih sayang sehari-hari di luar hubungan intim?</li>
+							</ul>
+							
+							<h4>Output Kesepakatan:</h4>
+							<p>Aturan komunikasi keintiman (tanpa paksaan, tanpa silent treatment) + kata kunci untuk meminta waktu pribadi</p>
+							
+							<div class="topic-worksheet">
+								<textarea placeholder="Tulis kesepakatan kalian di sini..." rows="5"></textarea>
+								<button class="btn btn-primary save-btn">Simpan Kesepakatan</button>
+							</div>
+						</div>
+					</details>
+
+					<details class="topic-accordion">
+						<summary class="topic-header">
+							<span class="topic-number">D7</span>
+							<h3>Konflik: Aturan Bertengkar yang Aman</h3>
+						</summary>
+						<div class="topic-content">
+							<div class="research-alert warning">
+								<h4>⚠️ Mengapa Ini Penting?</h4>
+								<p><strong>Prinsip #9:</strong> Kritik adalah alat perawatan, bukan pembangkangan. Sistem apa pun akan runtuh ketika koreksi dianggap penghinaan.</p>
+								<p><strong>Pemicu umum:</strong> Kelelahan, rasa tidak dihargai, perbedaan ekspektasi, campur tangan keluarga besar.</p>
+								<p><strong>Bahaya tanpa aturan:</strong> Konflik bisa eskalasi ke kekerasan verbal, ancaman cerai, atau keheningan berkepanjangan yang merusak trust.</p>
+								<p><strong>Pertanyaan ini mencegah:</strong> Konflik destruktif yang meninggalkan luka emosional permanen. Dengan protokol jelas, konflik menjadi alat untuk memperbaiki hubungan.</p>
+							</div>
+							
+							<h4>Pertanyaan Utama:</h4>
+							<p>Saat konflik, apa yang biasanya memicu kita? (Identifikasi pemicu agar bisa diantisipasi)</p>
+							
+							<h4>Follow-up:</h4>
+							<ul>
+								<li>Apa sinyal "stop" (timeout) dan kapan lanjut diskusi? (Sepakati jeda tanpa dianggap kabur)</li>
+								<li>Apakah kita butuh mediator (konselor/ustadz/mentor) jika buntu?</li>
+								<li>Apa 3 hal yang dilarang saat konflik? (Misal: menghina fisik, ancam cerai, bawa masa lalu di luar topik)</li>
+								<li>Bagaimana cara menyampaikan kritik agar tidak dianggap serangan? (Latih teknik "I message": saya merasa... saat kamu...)</li>
+								<li>Kapan harus minta maaf? Bagaimana menutup konflik secara tuntas?</li>
+							</ul>
+							
+							<h4>Output Kesepakatan:</h4>
+							<p>Protokol konflik 5 langkah + aturan timeout + daftar larangan + prosedur mediasi</p>
+							
+							<div class="topic-worksheet">
+								<textarea placeholder="Tulis kesepakatan kalian di sini..." rows="5"></textarea>
+								<button class="btn btn-primary save-btn">Simpan Kesepakatan</button>
+							</div>
+						</div>
+					</details>
+
+					<details class="topic-accordion">
+						<summary class="topic-header">
+							<span class="topic-number">D8</span>
+							<h3>Keluarga Besar: Mertua, Kerabat, Batas Intervensi</h3>
+						</summary>
+						<div class="topic-content">
+							<div class="research-alert warning">
+								<h4>⚠️ Mengapa Ini Penting?</h4>
+								<p><strong>Survei BPS:</strong> Mayoritas masyarakat Indonesia masih memandang laki-laki sebagai pencari nafkah dan perempuan sebagai pengurus rumah tangga. Keluarga besar sering memaksakan pandangan ini.</p>
+								<p><strong>Realitas:</strong> Mertua atau kerabat yang terlalu ikut campur dapat merusak keharmonisan pasangan. Tanpa batas jelas, keputusan keluarga kecil menjadi keputusan kolektif keluarga besar.</p>
+								<p><strong>Konflik umum:</strong> Kritik tentang pembagian peran, tuntutan bantuan finansial tanpa batas, atau ekspektasi merawat orang tua tanpa diskusi.</p>
+								<p><strong>Pertanyaan ini mencegah:</strong> Konflik dengan mertua, tuntutan finansial berlebihan, dan kebingungan siapa yang harus berbicara saat ada masalah.</p>
+							</div>
+							
+							<h4>Pertanyaan Utama:</h4>
+							<p>Seberapa jauh keluarga besar boleh ikut campur? Apakah mereka boleh memberi saran tanpa diminta?</p>
+							
+							<h4>Follow-up:</h4>
+							<ul>
+								<li>Jika ada konflik dengan mertua, siapa yang bicara? (Biasanya putra/putri kandung lebih mudah menegur orang tua sendiri)</li>
+								<li>Aturan bantuan finansial ke keluarga besar: batas nominal, frekuensi, persetujuan siapa?</li>
+								<li>Bagaimana menjelaskan pilihan struktur peran kepada keluarga besar agar mereka memahami dan tidak merendahkan suami/istri?</li>
+								<li>Bagaimana mengatasi ekspektasi merawat orang tua yang sakit tanpa mengorbankan keluarga kecil?</li>
+							</ul>
+							
+							<h4>Output Kesepakatan:</h4>
+							<p>Batas yang disepakati + cara menyampaikan secara sopan + draft pernyataan untuk keluarga besar</p>
+							
+							<div class="topic-worksheet">
+								<textarea placeholder="Tulis kesepakatan kalian di sini..." rows="5"></textarea>
+								<button class="btn btn-primary save-btn">Simpan Kesepakatan</button>
+							</div>
+						</div>
+					</details>
+
+					<details class="topic-accordion">
+						<summary class="topic-header">
+							<span class="topic-number">D9</span>
+							<h3>Karier, Lokasi, Relokasi, dan Ambisi</h3>
+						</summary>
+						<div class="topic-content">
+							<div class="research-alert danger">
+								<h4>🚨 Mengapa Ini Penting?</h4>
+								<p><strong>Studi longitudinal AS:</strong> Suami merasa nyaman ketika istri menyumbang hingga 40% pendapatan; rasa tertekan meningkat bila melebihi itu. Di Indonesia, beberapa kasus viral menunjukkan suami marah karena merasa "kurang dihargai" saat istri lebih mapan.</p>
+								<p><strong>Realitas Indonesia:</strong> Perbedaan gaji (perempuan rata-rata Rp 2,61 juta vs. laki-laki Rp 3,37 juta) atau sebaliknya (istri berpenghasilan lebih tinggi) dapat memicu tekanan maskulinitas atau ketidakadilan.</p>
+								<p><strong>Relokasi dan prioritas:</strong> Jika salah satu mendapat tawaran kerja di kota lain, siapa yang "mengorbankan" karier? Bagaimana kompensasinya?</p>
+								<p><strong>Pertanyaan ini mencegah:</strong> Kebencian tersembunyi karena satu pihak merasa kariernya "dikorbankan", atau konflik saat salah satu mencapai kesuksesan lebih tinggi.</p>
+							</div>
+							
+							<h4>Pertanyaan Utama:</h4>
+							<p>Apakah karier salah satu pasangan boleh "mendahului" sementara? Bagaimana kompensasi dan dukungan?</p>
+							
+							<h4>Follow-up:</h4>
+							<ul>
+								<li>Jika suami fokus karier → kompensasi untuk beban istri apa? Apakah suami akan membantu lebih banyak di rumah saat punya waktu luang?</li>
+								<li>Jika istri fokus karier → redistribusi domestik apa? Suami harus siap belajar memasak, membersihkan, dan mengasuh anak.</li>
+								<li>Relokasi: siapa punya veto jika berkaitan dengan kesehatan anak atau orang tua?</li>
+								<li>Bagaimana menjaga respek dan keadilan saat salah satu mencapai posisi lebih tinggi atau penghasilan lebih besar?</li>
+								<li>Apakah karier boleh diutamakan jika orang tua butuh perawatan?</li>
+							</ul>
+							
+							<h4>Output Kesepakatan:</h4>
+							<p>Prinsip prioritas karier + trigger kapan harus re-evaluasi (misal: jika beban kerja >50 jam/minggu atau gaji naik drastis)</p>
+							
+							<div class="topic-worksheet">
+								<textarea placeholder="Tulis kesepakatan kalian di sini..." rows="5"></textarea>
+								<button class="btn btn-primary save-btn">Simpan Kesepakatan</button>
+							</div>
+						</div>
+					</details>
+
+					<details class="topic-accordion">
+						<summary class="topic-header">
+							<span class="topic-number">D10</span>
+							<h3>Mode Krisis (WAJIB!) — Yang Sering Dilupakan</h3>
+						</summary>
+						<div class="topic-content">
+							<div class="research-alert danger">
+								<h4>🚨 Mengapa Ini PALING PENTING?</h4>
+								<p><strong>Prinsip #6:</strong> Setiap peran wajib punya "mode krisis". Terutama bagi keluarga yang hanya mengandalkan satu pencari nafkah, mode krisis ini mempersiapkan peran pengganti agar keluarga tetap berjalan.</p>
+								<p><strong>Realitas:</strong> PHK, sakit berat, keguguran, atau kematian orang tua bisa terjadi kapan saja. Tanpa SOP krisis, keluarga akan panik dan membuat keputusan buruk di bawah tekanan.</p>
+								<p><strong>Fakta BPS:</strong> Banyak keluarga terpukul ketika pencari nafkah utama kehilangan pekerjaan tanpa rencana cadangan. Siapa yang akan bekerja? Siapa yang mengurus rumah?</p>
+								<p><strong>Pertanyaan ini menyelamatkan:</strong> Keluarga dari kehancuran finansial, konflik darurat, dan keputusan medis/hukum yang salah karena tidak ada prosedur jelas.</p>
+							</div>
+							
+							<h4>Pertanyaan Utama:</h4>
+							<p>Kalau terjadi salah satu ini, siapa mengambil peran apa?</p>
+							<ul>
+								<li>🚫 Kehilangan pekerjaan (PHK)</li>
+								<li>🏥 Sakit berat / rawat inap</li>
+								<li>💔 Keguguran / komplikasi hamil</li>
+								<li>🕊️ Orang tua meninggal</li>
+								<li>⚖️ Masalah hukum / keamanan</li>
+							</ul>
+							
+							<h4>Follow-up:</h4>
+							<ul>
+								<li>Apa langkah 24 jam pertama? Siapa menghubungi siapa (keluarga, dokter, advokat)?</li>
+								<li>Bagaimana mempertahankan pendapatan ketika pencari nafkah utama sakit? Apakah istri akan bekerja sementara, atau apakah ada asuransi pengganti?</li>
+								<li>Siapa yang berhak mengambil keputusan darurat jika pasangan tidak mampu? Apakah ada surat kuasa?</li>
+								<li>Jika terjadi PHK, apakah peran domestik akan langsung bergeser agar yang menganggur fokus urusan rumah?</li>
+								<li>Bagaimana suami menerima transisi ini tanpa merasa kehilangan harga diri?</li>
+							</ul>
+							
+							<h4>Output Kesepakatan:</h4>
+							<p>SOP Krisis 1 halaman: daftar kontak penting + pembagian peran darurat + langkah keselamatan + rencana cadangan keuangan (dana darurat berapa bulan + asuransi)</p>
+							
+							<div class="topic-worksheet">
+								<textarea placeholder="Tulis kesepakatan kalian di sini..." rows="5"></textarea>
+								<button class="btn btn-primary save-btn">Simpan Kesepakatan</button>
+							</div>
+						</div>
+					</details>
+				</div>
+			</div>
+		</section>
+
+		<!-- Template Kontrak -->
+		<section id="template" class="section">
+			<div class="container">
+				<h2 class="section-title">Template "Kontrak Keadilan"</h2>
+				<p class="section-intro">Ringkas kesepakatan kalian dalam 1 halaman. Bisa diisi manual atau disimpan secara digital.</p>
+				
+				<div class="contract-template">
+					<div class="contract-field">
+						<label>1. Model default kami:</label>
+						<input type="text" placeholder="Contoh: Model 2 - Hybrid Kapasitas" id="contract-model" />
+					</div>
+
+					<div class="contract-field">
+						<label>2. PIC domain suami:</label>
+						<textarea placeholder="Contoh: Keuangan, keamanan rumah, keputusan investasi..." rows="2" id="contract-husband"></textarea>
+					</div>
+
+					<div class="contract-field">
+						<label>3. PIC domain istri:</label>
+						<textarea placeholder="Contoh: Pengasuhan anak, pendidikan, kesehatan keluarga..." rows="2" id="contract-wife"></textarea>
+					</div>
+
+					<div class="contract-field">
+						<label>4. Hal yang tidak boleh dilanggar (3 item):</label>
+						<textarea placeholder="Contoh: 1) Tidak menghina, 2) Tidak mengancam cerai, 3) Tidak mengungkit masa lalu" rows="3" id="contract-rules"></textarea>
+					</div>
+
+					<div class="contract-field">
+						<label>5. Transparansi wajib (uang/utang/risiko):</label>
+						<textarea placeholder="Contoh: Semua rekening diketahui, utang >5 juta harus disetujui bersama..." rows="2" id="contract-transparency"></textarea>
+					</div>
+
+					<div class="contract-field">
+						<label>6. Mode krisis: siapa memimpin & bagaimana:</label>
+						<textarea placeholder="Contoh: Krisis finansial - suami memimpin dengan konsultasi istri; Krisis kesehatan - istri memimpin..." rows="3" id="contract-crisis"></textarea>
+					</div>
+
+					<div class="contract-field">
+						<label>7. Jadwal review:</label>
+						<input type="text" placeholder="Contoh: Setiap 3 bulan, tanggal 1" id="contract-review" />
+					</div>
+
+					<div class="contract-actions">
+						<button class="btn btn-primary" id="save-contract">Simpan Kontrak</button>
+						<button class="btn btn-secondary" id="download-contract">Download PDF</button>
+						<button class="btn btn-outline" id="print-contract">Cetak</button>
+					</div>
+
+					<div class="contract-note">
+						<p><strong>Catatan:</strong> Kontrak ini disimpan di browser lokal. Untuk keamanan, download atau cetak sebagai backup.</p>
+					</div>
+				</div>
+			</div>
+		</section>
+
+		<!-- References -->
+		<section class="section bg-alt">
+			<div class="container">
+				<h2 class="section-title">Referensi & Basis Riset</h2>
+				<div class="references">
+					<div class="ref-card">
+						<h4>📊 Data BPS 2024</h4>
+						<p>Statistik perempuan breadwinner dan beban ganda di Indonesia</p>
+					</div>
+					<div class="ref-card">
+						<h4>🎓 Penelitian FISIP UI</h4>
+						<p>Pola kemitraan suami-istri bekerja</p>
+					</div>
+					<div class="ref-card">
+						<h4>💑 Gottman Institute</h4>
+						<p>Sound Relationship House framework</p>
+					</div>
+					<div class="ref-card">
+						<h4>📚 Program PREP</h4>
+						<p>Communication & conflict management training</p>
+					</div>
+					<div class="ref-card">
+						<h4>⚖️ Riset Household Labor</h4>
+						<p>Persepsi keadilan dan kepuasan pernikahan</p>
+					</div>
+				</div>
+			</div>
+		</section>
+	</main>
+
+	<footer class="footer">
+		<div class="container">
+			<p>&copy; 2026 - Framework Pranikah. Bebas digunakan untuk edukasi non-komersial dengan menyebut sumber.</p>
+			<p>Disusun berdasarkan prinsip keadilan, riset akademik, dan adaptasi praktis untuk keluarga Indonesia.</p>
+		</div>
+	</footer>
+</Layout>
+
+<style>
+	/* Container */
+	.container {
+		max-width: 1200px;
+		margin: 0 auto;
+		padding: 0 1.5rem;
+	}
+
+	/* Navbar */
+	.navbar {
+		background: var(--bg);
+		border-bottom: 1px solid var(--border);
+		padding: 1rem 0;
+		position: sticky;
+		top: 0;
+		z-index: 100;
+		backdrop-filter: blur(10px);
+		background-color: rgba(255, 255, 255, 0.95);
+	}
+
+	.navbar .container {
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		flex-wrap: wrap;
+		gap: 1rem;
+	}
+
+	.nav-right {
+		display: flex;
+		align-items: center;
+		gap: 2rem;
+	}
+
+	#navbar-auth {
+		display: flex;
+		align-items: center;
+	}
+
+	.nav-brand h1 {
+		font-size: 1.5rem;
+		margin: 0;
+		color: var(--primary);
+	}
+
+	.tagline {
+		font-size: 0.9rem;
+		color: var(--text-muted);
+		margin: 0;
+	}
+
+	.nav-links {
+		display: flex;
+		gap: 1.5rem;
+		list-style: none;
+		margin: 0;
+		padding: 0;
+		flex-wrap: wrap;
+	}
+
+	.nav-links a {
+		color: var(--text);
+		font-weight: 500;
+		transition: color 0.2s;
+	}
+
+	.nav-links a:hover {
+		color: var(--primary);
+	}
+
+	/* User Menu in Navbar */
+	.user-menu {
+		position: relative;
+	}
+
+	.user-menu-trigger {
+		background: none;
+		border: 2px solid var(--border);
+		border-radius: 50%;
+		padding: 2px;
+		cursor: pointer;
+		transition: all 0.2s;
+	}
+
+	.user-menu-trigger:hover {
+		border-color: var(--primary);
+		transform: scale(1.05);
+	}
+
+	.navbar-avatar {
+		width: 36px;
+		height: 36px;
+		border-radius: 50%;
+		object-fit: cover;
+		display: block;
+	}
+
+	.user-dropdown {
+		position: absolute;
+		top: calc(100% + 10px);
+		right: 0;
+		background: white;
+		border: 1px solid var(--border);
+		border-radius: 12px;
+		box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+		min-width: 280px;
+		opacity: 0;
+		visibility: hidden;
+		transform: translateY(-10px);
+		transition: all 0.3s;
+		z-index: 1000;
+	}
+
+	.user-menu:hover .user-dropdown,
+	.user-dropdown:hover {
+		opacity: 1;
+		visibility: visible;
+		transform: translateY(0);
+	}
+
+	.dropdown-header {
+		padding: 1.5rem;
+		display: flex;
+		align-items: center;
+		gap: 1rem;
+	}
+
+	.dropdown-avatar {
+		width: 50px;
+		height: 50px;
+		border-radius: 50%;
+		object-fit: cover;
+	}
+
+	.dropdown-info {
+		flex: 1;
+		min-width: 0;
+	}
+
+	.dropdown-name {
+		font-weight: 600;
+		color: var(--text);
+		margin: 0 0 0.25rem 0;
+		white-space: nowrap;
+		overflow: hidden;
+		text-overflow: ellipsis;
+	}
+
+	.dropdown-email {
+		font-size: 0.85rem;
+		color: var(--text-muted);
+		margin: 0;
+		white-space: nowrap;
+		overflow: hidden;
+		text-overflow: ellipsis;
+	}
+
+	.dropdown-divider {
+		height: 1px;
+		background: var(--border);
+	}
+
+	.dropdown-item {
+		width: 100%;
+		padding: 1rem 1.5rem;
+		text-align: left;
+		background: none;
+		border: none;
+		color: var(--text);
+		font-size: 0.95rem;
+		cursor: pointer;
+		transition: background 0.2s;
+		display: flex;
+		align-items: center;
+		gap: 0.5rem;
+	}
+
+	.dropdown-item:hover {
+		background: var(--bg-alt);
+	}
+
+	/* Login Modal */
+	.modal {
+		position: fixed;
+		top: 0;
+		left: 0;
+		width: 100%;
+		height: 100%;
+		z-index: 9999;
+		display: none;
+		align-items: center;
+		justify-content: center;
+	}
+
+	.modal.active {
+		display: flex;
+	}
+
+	.modal-overlay {
+		position: absolute;
+		top: 0;
+		left: 0;
+		width: 100%;
+		height: 100%;
+		background: rgba(0, 0, 0, 0.6);
+		backdrop-filter: blur(4px);
+	}
+
+	.modal-content {
+		position: relative;
+		background: white;
+		border-radius: 16px;
+		max-width: 500px;
+		width: 90%;
+		max-height: 90vh;
+		overflow-y: auto;
+		box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+		animation: modalSlideIn 0.3s ease;
+	}
+
+	@keyframes modalSlideIn {
+		from {
+			opacity: 0;
+			transform: translateY(-30px) scale(0.95);
+		}
+		to {
+			opacity: 1;
+			transform: translateY(0) scale(1);
+		}
+	}
+
+	.modal-close {
+		position: absolute;
+		top: 1rem;
+		right: 1rem;
+		background: var(--bg-alt);
+		border: none;
+		width: 32px;
+		height: 32px;
+		border-radius: 50%;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		cursor: pointer;
+		font-size: 1.2rem;
+		color: var(--text-muted);
+		transition: all 0.2s;
+	}
+
+	.modal-close:hover {
+		background: var(--danger);
+		color: white;
+		transform: rotate(90deg);
+	}
+
+	.modal-body {
+		padding: 3rem 2rem 2rem;
+		text-align: center;
+	}
+
+	.modal-body h2 {
+		margin-bottom: 1rem;
+		color: var(--text);
+	}
+
+	.modal-body > p {
+		color: var(--text-muted);
+		margin-bottom: 2rem;
+		line-height: 1.6;
+	}
+
+	.btn-large {
+		padding: 1rem 2rem;
+		font-size: 1rem;
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+	}
+
+	#modal-google-login-btn {
+		background: white;
+		color: var(--text);
+		border: 2px solid var(--border);
+		margin-bottom: 1rem;
+	}
+
+	#modal-google-login-btn:hover {
+		background: var(--bg-alt);
+		border-color: var(--primary);
+	}
+
+	.auth-note {
+		font-size: 0.85rem;
+		color: var(--text-muted);
+		line-height: 1.5;
+	}
+
+	/* Framework Management Card */
+	.framework-card {
+		background: white;
+		border-radius: 12px;
+		padding: 2rem;
+		box-shadow: 0 2px 12px rgba(0, 0, 0, 0.1);
+	}
+
+	.framework-card h3 {
+		margin-bottom: 1.5rem;
+		text-align: center;
+	}
+
+	.sync-status {
+		display: flex;
+		align-items: center;
+		gap: 0.5rem;
+		font-size: 0.85rem;
+		padding: 0.5rem 1rem;
+		background: var(--bg-alt);
+		border-radius: 20px;
+	}
+
+	.status-dot {
+		width: 8px;
+		height: 8px;
+		border-radius: 50%;
+		background: var(--text-muted);
+		animation: pulse 2s ease-in-out infinite;
+	}
+
+	.sync-status.online .status-dot {
+		background: var(--success);
+	}
+
+	.sync-status.saving .status-dot {
+		background: var(--warning);
+		animation: pulse 0.5s ease-in-out infinite;
+	}
+
+	.sync-status.offline .status-dot {
+		background: var(--text-muted);
+		animation: none;
+	}
+
+	@keyframes pulse {
+		0%, 100% { opacity: 1; }
+		50% { opacity: 0.5; }
+	}
+
+	.status-text {
+		color: var(--text);
+		font-weight: 500;
+	}
+
+	.framework-actions {
+		display: flex;
+		flex-direction: column;
+		gap: 1.5rem;
+		align-items: center;
+	}
+
+	.or-divider {
+		color: var(--text-muted);
+		font-weight: 500;
+		position: relative;
+		padding: 0 1rem;
+	}
+
+	.or-divider::before,
+	.or-divider::after {
+		content: '';
+		position: absolute;
+		top: 50%;
+		width: 100px;
+		height: 1px;
+		background: var(--border);
+	}
+
+	.or-divider::before {
+		right: 100%;
+	}
+
+	.or-divider::after {
+		left: 100%;
+	}
+
+	.share-link-section {
+		width: 100%;
+		max-width: 500px;
+	}
+
+	.share-link-section h4 {
+		margin-bottom: 0.75rem;
+		font-size: 0.95rem;
+		color: var(--text);
+	}
+
+	.share-link-container {
+		display: flex;
+		gap: 0.5rem;
+	}
+
+	.share-link-input {
+		flex: 1;
+		padding: 0.75rem;
+		border: 2px solid var(--border);
+		border-radius: 8px;
+		font-size: 0.9rem;
+		background: var(--bg-alt);
+	}
+
+	.share-note {
+		font-size: 0.85rem;
+		color: var(--text-muted);
+		margin-top: 0.5rem;
+	}
+
+	/* Hero */
+	.hero {
+		padding: 4rem 0;
+		background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+		color: white;
+	}
+
+	.hero-content {
+		text-align: center;
+		margin-bottom: 3rem;
+	}
+
+	.hero h1 {
+		font-size: 2.5rem;
+		margin-bottom: 1rem;
+		color: white;
+	}
+
+	.lead {
+		font-size: 1.25rem;
+		opacity: 0.95;
+		max-width: 800px;
+		margin: 0 auto 2rem;
+	}
+
+	.cta-buttons {
+		display: flex;
+		gap: 1rem;
+		justify-content: center;
+		flex-wrap: wrap;
+	}
+
+	.hero-info {
+		display: grid;
+		grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+		gap: 1.5rem;
+	}
+
+	.info-card {
+		background: rgba(255, 255, 255, 0.1);
+		backdrop-filter: blur(10px);
+		padding: 1.5rem;
+		border-radius: 12px;
+		border: 1px solid rgba(255, 255, 255, 0.2);
+	}
+
+	.info-card h3 {
+		font-size: 1.25rem;
+		margin-bottom: 0.5rem;
+		color: white;
+	}
+
+	.info-card p {
+		opacity: 0.9;
+		margin: 0;
+	}
+
+	/* Buttons */
+	.btn {
+		display: inline-block;
+		padding: 0.75rem 1.5rem;
+		border-radius: 8px;
+		font-weight: 600;
+		text-align: center;
+		transition: all 0.3s;
+		cursor: pointer;
+		border: 2px solid transparent;
+	}
+
+	.btn-primary {
+		background: var(--primary);
+		color: white;
+	}
+
+	.btn-primary:hover {
+		background: var(--primary-dark);
+		transform: translateY(-2px);
+		box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
+	}
+
+	.btn-secondary {
+		background: var(--secondary);
+		color: white;
+	}
+
+	.btn-secondary:hover {
+		background: #475569;
+	}
+
+	.btn-outline {
+		background: transparent;
+		border: 2px solid var(--primary);
+		color: var(--primary);
+	}
+
+	.btn-outline:hover {
+		background: var(--primary);
+		color: white;
+	}
+
+	/* Sections */
+	.section {
+		padding: 4rem 0;
+	}
+
+	.bg-alt {
+		background-color: var(--bg-alt);
+	}
+
+	.section-title {
+		text-align: center;
+		margin-bottom: 1rem;
+		color: var(--text);
+	}
+
+	.section-intro {
+		text-align: center;
+		color: var(--text-muted);
+		max-width: 800px;
+		margin: 0 auto 3rem;
+		font-size: 1.1rem;
+	}
+
+	/* Usage Note */
+	.usage-note {
+		padding: 2rem 0;
+		background-color: #fef3c7;
+	}
+
+	.note-box {
+		background: white;
+		padding: 2rem;
+		border-radius: 12px;
+		border-left: 4px solid var(--warning);
+	}
+
+	.note-box h3 {
+		color: var(--warning);
+		margin-bottom: 1rem;
+	}
+
+	.note-box ul {
+		margin: 0;
+	}
+
+	/* Principles Grid */
+	.principles-grid {
+		display: grid;
+		grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+		gap: 1.5rem;
+	}
+
+	.principle-card {
+		background: white;
+		padding: 1.5rem;
+		border-radius: 12px;
+		border: 2px solid var(--border);
+		transition: all 0.3s;
+	}
+
+	.principle-card:hover {
+		border-color: var(--primary);
+		transform: translateY(-4px);
+		box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+	}
+
+	.principle-number {
+		width: 40px;
+		height: 40px;
+		background: var(--primary);
+		color: white;
+		border-radius: 50%;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		font-weight: bold;
+		margin-bottom: 1rem;
+	}
+
+	.principle-card h3 {
+		font-size: 1.1rem;
+		margin-bottom: 0.5rem;
+	}
+
+	.principle-card p {
+		color: var(--text-muted);
+		margin: 0;
+	}
+
+	/* Models */
+	.models-container {
+		display: grid;
+		grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+		gap: 1.5rem;
+		margin-bottom: 3rem;
+	}
+
+	.model-card {
+		background: white;
+		padding: 2rem;
+		border-radius: 12px;
+		border: 2px solid var(--border);
+		transition: all 0.3s;
+		cursor: pointer;
+	}
+
+	.model-card:hover {
+		border-color: var(--primary);
+		transform: translateY(-4px);
+		box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+	}
+
+	.model-card.selected {
+		border-color: var(--primary);
+		background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
+	}
+
+	.model-header {
+		display: flex;
+		justify-content: space-between;
+		align-items: flex-start;
+		margin-bottom: 1rem;
+	}
+
+	.model-header h3 {
+		font-size: 1.2rem;
+		margin: 0;
+	}
+
+	.model-badge {
+		background: var(--secondary);
+		color: white;
+		padding: 0.25rem 0.75rem;
+		border-radius: 20px;
+		font-size: 0.8rem;
+		font-weight: 600;
+	}
+
+	.model-badge.recommended {
+		background: var(--success);
+	}
+
+	.model-features {
+		list-style: none;
+		padding: 0;
+		margin: 0 0 1.5rem 0;
+	}
+
+	.model-features li {
+		padding: 0.5rem 0;
+		border-bottom: 1px solid var(--border);
+	}
+
+	.model-features li:last-child {
+		border-bottom: none;
+	}
+
+	.model-btn {
+		width: 100%;
+	}
+
+	.model-details {
+		background: white;
+		padding: 2rem;
+		border-radius: 12px;
+		border: 2px solid var(--primary);
+	}
+
+	.model-details.hidden {
+		display: none;
+	}
+
+	.model-actions {
+		display: flex;
+		gap: 1rem;
+		margin-top: 2rem;
+		flex-wrap: wrap;
+	}
+
+	/* Cases */
+	.cases-grid {
+		display: grid;
+		gap: 2rem;
+	}
+
+	.case-card {
+		background: white;
+		padding: 2rem;
+		border-radius: 12px;
+		border: 2px solid var(--border);
+	}
+
+	.case-badge {
+		display: inline-block;
+		background: var(--primary);
+		color: white;
+		padding: 0.25rem 0.75rem;
+		border-radius: 20px;
+		font-size: 0.85rem;
+		font-weight: 600;
+		margin-bottom: 1rem;
+	}
+
+	.case-card h3 {
+		margin-bottom: 1rem;
+	}
+
+	.case-stat {
+		background: var(--bg-alt);
+		padding: 1rem;
+		border-radius: 8px;
+		font-weight: 600;
+		color: var(--primary);
+		margin-bottom: 1.5rem;
+	}
+
+	.case-detail h4 {
+		margin-top: 1.5rem;
+		margin-bottom: 0.5rem;
+		color: var(--text);
+	}
+
+	/* Discussion Topics */
+	.discussion-topics {
+		display: flex;
+		flex-direction: column;
+		gap: 1rem;
+	}
+
+	.topic-accordion {
+		background: white;
+		border: 2px solid var(--border);
+		border-radius: 12px;
+		overflow: hidden;
+	}
+
+	.topic-header {
+		display: flex;
+		align-items: center;
+		gap: 1rem;
+		padding: 1.5rem;
+		cursor: pointer;
+		background: white;
+		transition: background 0.3s;
+	}
+
+	.topic-header:hover {
+		background: var(--bg-alt);
+	}
+
+	.topic-number {
+		width: 50px;
+		height: 50px;
+		background: var(--primary);
+		color: white;
+		border-radius: 50%;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		font-weight: bold;
+		flex-shrink: 0;
+	}
+
+	.topic-header h3 {
+		margin: 0;
+		font-size: 1.2rem;
+	}
+
+	/* Research Alert Boxes */
+	.research-alert {
+		background: var(--info-bg);
+		border-left: 4px solid var(--info);
+		padding: 1.5rem;
+		border-radius: 8px;
+		margin-bottom: 1.5rem;
+	}
+
+	.research-alert.warning {
+		background: var(--warning-bg);
+		border-left-color: var(--warning);
+	}
+
+	.research-alert.danger {
+		background: var(--danger-bg);
+		border-left-color: var(--danger);
+	}
+
+	.research-alert.info {
+		background: var(--info-bg);
+		border-left-color: var(--info);
+	}
+
+	.research-alert h4 {
+		margin-top: 0;
+		margin-bottom: 1rem;
+		font-size: 1.1rem;
+		display: flex;
+		align-items: center;
+		gap: 0.5rem;
+	}
+
+	.research-alert p {
+		margin-bottom: 0.75rem;
+		line-height: 1.6;
+	}
+
+	.research-alert p:last-child {
+		margin-bottom: 0;
+	}
+
+	.research-alert strong {
+		color: var(--text);
+		font-weight: 600;
+	}
+
+	.topic-content {
+		padding: 0 1.5rem 1.5rem 1.5rem;
+	}
+
+	.topic-content h4 {
+		color: var(--primary);
+		margin-top: 1.5rem;
+		margin-bottom: 0.75rem;
+	}
+
+	.topic-worksheet {
+		margin-top: 2rem;
+		padding: 1.5rem;
+		background: var(--bg-alt);
+		border-radius: 8px;
+	}
+
+	.topic-worksheet textarea {
+		width: 100%;
+		padding: 1rem;
+		border: 2px solid var(--border);
+		border-radius: 8px;
+		font-family: inherit;
+		resize: vertical;
+		margin-bottom: 1rem;
+	}
+
+	.topic-worksheet textarea:focus {
+		outline: none;
+		border-color: var(--primary);
+	}
+
+	/* Contract Template */
+	.contract-template {
+		background: white;
+		padding: 2rem;
+		border-radius: 12px;
+		border: 2px solid var(--border);
+	}
+
+	.contract-field {
+		margin-bottom: 1.5rem;
+	}
+
+	.contract-field label {
+		display: block;
+		font-weight: 600;
+		margin-bottom: 0.5rem;
+		color: var(--text);
+	}
+
+	.contract-field input,
+	.contract-field textarea {
+		width: 100%;
+		padding: 0.75rem;
+		border: 2px solid var(--border);
+		border-radius: 8px;
+		font-family: inherit;
+		font-size: 1rem;
+	}
+
+	.contract-field input:focus,
+	.contract-field textarea:focus {
+		outline: none;
+		border-color: var(--primary);
+	}
+
+	.contract-field textarea {
+		resize: vertical;
+	}
+
+	.contract-actions {
+		display: flex;
+		gap: 1rem;
+		margin-top: 2rem;
+		flex-wrap: wrap;
+	}
+
+	.contract-note {
+		margin-top: 1.5rem;
+		padding: 1rem;
+		background: var(--bg-alt);
+		border-radius: 8px;
+		border-left: 4px solid var(--warning);
+	}
+
+	.contract-note p {
+		margin: 0;
+		color: var(--text-muted);
+		font-size: 0.9rem;
+	}
+
+	/* References */
+	.references {
+		display: grid;
+		grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+		gap: 1.5rem;
+	}
+
+	.ref-card {
+		background: white;
+		padding: 1.5rem;
+		border-radius: 12px;
+		border: 2px solid var(--border);
+		text-align: center;
+	}
+
+	.ref-card h4 {
+		margin-bottom: 0.5rem;
+		color: var(--primary);
+	}
+
+	.ref-card p {
+		margin: 0;
+		color: var(--text-muted);
+		font-size: 0.9rem;
+	}
+
+	/* Footer */
+	.footer {
+		background: var(--text);
+		color: white;
+		padding: 2rem 0;
+		text-align: center;
+	}
+
+	.footer p {
+		margin: 0.5rem 0;
+		opacity: 0.9;
+	}
+
+	/* Responsive */
+	@media (max-width: 768px) {
+		.hero h1 {
+			font-size: 2rem;
+		}
+
+		.lead {
+			font-size: 1.1rem;
+		}
+
+		.navbar .container {
+			flex-direction: column;
+			align-items: flex-start;
+		}
+
+		.nav-right {
+			width: 100%;
+			flex-direction: column;
+			gap: 1rem;
+		}
+
+		.nav-links {
+			width: 100%;
+			justify-content: center;
+			order: 2;
+		}
+
+		#navbar-auth {
+			width: 100%;
+			justify-content: center;
+			order: 1;
+		}
+
+		.user-dropdown {
+			right: auto;
+			left: 50%;
+			transform: translateX(-50%) translateY(-10px);
+		}
+
+		.user-menu:hover .user-dropdown,
+		.user-dropdown:hover {
+			transform: translateX(-50%) translateY(0);
+		}
+
+		.principles-grid,
+		.models-container {
+			grid-template-columns: 1fr;
+		}
+
+		.model-actions,
+		.contract-actions {
+			flex-direction: column;
+		}
+
+		.model-actions .btn,
+		.contract-actions .btn {
+			width: 100%;
+		}
+
+		.modal-content {
+			width: 95%;
+		}
+
+		.modal-body {
+			padding: 2rem 1.5rem 1.5rem;
+		}
+	}
+</style>
+
+<script>
+	import { auth, googleProvider } from '../lib/firebase';
+	import { signInWithPopup, signOut, onAuthStateChanged } from 'firebase/auth';
+	import { 
+		createFramework, 
+		getFramework, 
+		updateFramework, 
+		subscribeToFramework,
+		hasAccess,
+		type FrameworkData 
+	} from '../lib/firestore';
+
+	console.log('Script loaded');
+
+	// Modal Controls
+	const loginModal = document.getElementById('login-modal');
+	const navbarLoginBtn = document.getElementById('navbar-login-btn');
+	const modalGoogleLoginBtn = document.getElementById('modal-google-login-btn');
+	const closeModalBtn = document.getElementById('close-modal');
+	const modalOverlay = loginModal?.querySelector('.modal-overlay');
+
+	console.log('Elements:', { 
+		loginModal: !!loginModal, 
+		navbarLoginBtn: !!navbarLoginBtn,
+		modalGoogleLoginBtn: !!modalGoogleLoginBtn 
+	});
+
+	// Navbar Auth Elements
+	const navbarUserMenu = document.getElementById('navbar-user-menu');
+	const navbarUserAvatar = document.getElementById('navbar-user-avatar') as HTMLImageElement;
+	const dropdownAvatar = document.getElementById('dropdown-avatar') as HTMLImageElement;
+	const dropdownName = document.getElementById('dropdown-name');
+	const dropdownEmail = document.getElementById('dropdown-email');
+	const dropdownLogout = document.getElementById('dropdown-logout');
+
+	// Framework Management
+	const frameworkManagement = document.getElementById('framework-management');
+	const shareLinkInput = document.getElementById('share-link-input') as HTMLInputElement;
+	const copyLinkBtn = document.getElementById('copy-link-btn');
+	const createNewFrameworkBtn = document.getElementById('create-new-framework-btn');
+
+	// Global state
+	let currentFramework: FrameworkData | null = null;
+	let currentUser: any = null;
+	let unsubscribeFramework: (() => void) | null = null;
+
+	// Sync status element
+	const syncStatus = document.getElementById('sync-status');
+
+	// Initialize UI - show login button by default
+	if (navbarLoginBtn) {
+		navbarLoginBtn.style.display = 'block';
+	}
+	if (navbarUserMenu) {
+		navbarUserMenu.style.display = 'none';
+	}
+
+	// Update sync status UI
+	function updateSyncStatus(status: 'online' | 'offline' | 'saving') {
+		if (!syncStatus) return;
+		
+		syncStatus.className = `sync-status ${status}`;
+		const statusText = syncStatus.querySelector('.status-text');
+		if (statusText) {
+			switch (status) {
+				case 'online':
+					statusText.textContent = 'Tersinkron';
+					break;
+				case 'saving':
+					statusText.textContent = 'Menyimpan...';
+					break;
+				case 'offline':
+					statusText.textContent = 'Offline';
+					break;
+			}
+		}
+	}
+
+	// Show Modal
+	function showLoginModal() {
+		console.log('showLoginModal called');
+		if (loginModal) {
+			loginModal.classList.add('active');
+			document.body.style.overflow = 'hidden';
+			console.log('Modal should be visible now');
+		} else {
+			console.error('loginModal element not found');
+		}
+	}
+
+	// Hide Modal
+	function hideLoginModal() {
+		console.log('hideLoginModal called');
+		loginModal?.classList.remove('active');
+		document.body.style.overflow = '';
+	}
+
+	// Event Listeners for Modal
+	console.log('Setting up event listeners');
+	if (navbarLoginBtn) {
+		navbarLoginBtn.addEventListener('click', () => {
+			console.log('Login button clicked');
+			showLoginModal();
+		});
+	} else {
+		console.error('navbarLoginBtn not found');
+	}
+	closeModalBtn?.addEventListener('click', hideLoginModal);
+	modalOverlay?.addEventListener('click', hideLoginModal);
+
+	// Google Login
+	async function handleGoogleLogin() {
+		try {
+			const result = await signInWithPopup(auth, googleProvider);
+			console.log('Login berhasil:', result.user);
+			hideLoginModal();
+		} catch (error: any) {
+			console.error('Login error:', error);
+			alert('Gagal login: ' + error.message);
+		}
+	}
+
+	modalGoogleLoginBtn?.addEventListener('click', handleGoogleLogin);
+
+	// Logout
+	dropdownLogout?.addEventListener('click', async () => {
+		try {
+			await signOut(auth);
+			console.log('Logout berhasil');
+		} catch (error) {
+			console.error('Logout error:', error);
+		}
+	});
+
+	// Auth State Observer
+	onAuthStateChanged(auth, async (user) => {
+		if (user) {
+			// User is logged in
+			console.log('User logged in:', user);
+			currentUser = user;
+			
+			// Hide login button
+			if (navbarLoginBtn) navbarLoginBtn.style.display = 'none';
+			
+			// Show user menu
+			if (navbarUserMenu) navbarUserMenu.style.display = 'block';
+			
+			// Update user info
+			if (navbarUserAvatar && user.photoURL) navbarUserAvatar.src = user.photoURL;
+			if (dropdownAvatar && user.photoURL) dropdownAvatar.src = user.photoURL;
+			if (dropdownName) dropdownName.textContent = user.displayName || 'User';
+			if (dropdownEmail) dropdownEmail.textContent = user.email || '';
+
+			// Show framework management
+			if (frameworkManagement) frameworkManagement.style.display = 'block';
+
+			// Check for framework ID in URL
+			const urlParams = new URLSearchParams(window.location.search);
+			const frameworkId = urlParams.get('fw');
+			
+			if (frameworkId) {
+				// Load existing framework
+				try {
+					const framework = await getFramework(frameworkId);
+					
+					if (framework && user.email && hasAccess(framework, user.email)) {
+						// User has access to this framework
+						console.log('Loading framework:', framework);
+						currentFramework = framework;
+						
+						// Update share link
+						if (shareLinkInput) {
+							shareLinkInput.value = `${window.location.origin}${window.location.pathname}?fw=${frameworkId}`;
+						}
+						
+						// Subscribe to real-time updates
+						unsubscribeFramework = subscribeToFramework(frameworkId, (updatedFramework) => {
+							if (updatedFramework) {
+								currentFramework = updatedFramework;
+								loadFrameworkData(updatedFramework);
+								updateSyncStatus('online');
+							}
+						});
+						
+						// Load initial data
+						loadFrameworkData(framework);
+						updateSyncStatus('online');
+					} else {
+						alert('Anda tidak memiliki akses ke diskusi ini.');
+						window.location.href = window.location.pathname;
+					}
+				} catch (error) {
+					console.error('Error loading framework:', error);
+					alert('Gagal memuat diskusi. Silakan coba lagi.');
+				}
+			} else {
+				// No framework ID, load from localStorage as fallback
+				loadFromLocalStorage();
+				updateSyncStatus('offline');
+			}
+
+			// Store user globally for other scripts
+			(window as any).currentUser = user;
+			(window as any).getCurrentUser = () => currentUser;
+			(window as any).getCurrentFramework = () => currentFramework;
+		} else {
+			// User is logged out
+			console.log('User logged out');
+			currentUser = null;
+			currentFramework = null;
+			
+			// Unsubscribe from framework updates
+			if (unsubscribeFramework) {
+				unsubscribeFramework();
+				unsubscribeFramework = null;
+			}
+			
+			// Show login button
+			if (navbarLoginBtn) navbarLoginBtn.style.display = 'block';
+			
+			// Hide user menu
+			if (navbarUserMenu) navbarUserMenu.style.display = 'none';
+
+			// Hide framework management
+			if (frameworkManagement) frameworkManagement.style.display = 'none';
+
+			// Clear global user
+			(window as any).currentUser = null;
+			(window as any).getCurrentUser = () => null;
+			(window as any).getCurrentFramework = () => null;
+			
+			// Load from localStorage for offline use
+			loadFromLocalStorage();
+		}
+	});
+
+	// Copy Share Link
+	copyLinkBtn?.addEventListener('click', () => {
+		if (shareLinkInput) {
+			shareLinkInput.select();
+			document.execCommand('copy');
+			
+			// Visual feedback
+			const originalText = copyLinkBtn.textContent;
+			copyLinkBtn.textContent = '✓ Tersalin!';
+			copyLinkBtn.classList.add('btn-success');
+			
+			setTimeout(() => {
+				copyLinkBtn.textContent = originalText;
+				copyLinkBtn.classList.remove('btn-success');
+			}, 2000);
+		}
+	});
+
+	// Create New Framework
+	createNewFrameworkBtn?.addEventListener('click', async () => {
+		if (!currentUser) {
+			alert('Silakan login terlebih dahulu');
+			showLoginModal();
+			return;
+		}
+
+		try {
+			const frameworkId = await createFramework(
+				currentUser.uid, 
+				currentUser.email || '', 
+				currentUser.displayName || 'User'
+			);
+			
+			console.log('Framework created:', frameworkId);
+			
+			// Redirect to new framework
+			window.location.href = `${window.location.pathname}?fw=${frameworkId}`;
+		} catch (error) {
+			console.error('Error creating framework:', error);
+			alert('Gagal membuat diskusi baru. Silakan coba lagi.');
+		}
+	});
+
+	// Save to Firestore
+	async function saveToFirestore(updates: any) {
+		if (currentFramework && currentUser && currentUser.email) {
+			try {
+				updateSyncStatus('saving');
+				await updateFramework(currentFramework.id, updates, currentUser.email);
+				console.log('Saved to Firestore:', updates);
+				updateSyncStatus('online');
+				return true;
+			} catch (error) {
+				console.error('Error saving to Firestore:', error);
+				updateSyncStatus('offline');
+				// Fallback to localStorage
+				saveToLocalStorage(updates);
+				return false;
+			}
+		} else {
+			// Fallback to localStorage if offline
+			saveToLocalStorage(updates);
+			updateSyncStatus('offline');
+			return false;
+		}
+	}
+
+	// Save to localStorage (fallback)
+	function saveToLocalStorage(updates: any) {
+		if (updates.selectedModel) {
+			localStorage.setItem('selectedModel', updates.selectedModel);
+		}
+		if (updates.discussions) {
+			Object.entries(updates.discussions).forEach(([key, value]) => {
+				localStorage.setItem(`discussion-${key}`, value as string);
+			});
+		}
+		if (updates.contract) {
+			Object.entries(updates.contract).forEach(([key, value]) => {
+				localStorage.setItem(`contract-${key}`, value as string);
+			});
+		}
+	}
+
+	// Load framework data from Firestore
+	function loadFrameworkData(framework: FrameworkData) {
+		console.log('Loading framework data:', framework);
+		
+		// Load selected model
+		if (framework.selectedModel) {
+			const modelCards = document.querySelectorAll('.model-card');
+			modelCards.forEach(card => card.classList.remove('selected'));
+			
+			const savedCard = document.querySelector(`[data-model="${framework.selectedModel}"]`);
+			if (savedCard) {
+				savedCard.classList.add('selected');
+				
+				// Show model details
+				const modelDetails = document.getElementById('model-details');
+				const modelContent = document.getElementById('model-content');
+				if (modelContent && modelDescriptions[framework.selectedModel]) {
+					modelContent.innerHTML = modelDescriptions[framework.selectedModel];
+					modelDetails?.classList.remove('hidden');
+				}
+			}
+		}
+
+		// Load discussions
+		if (framework.discussions) {
+			document.querySelectorAll('.topic-worksheet textarea').forEach((textarea, index) => {
+				const topicNum = index + 1;
+				const key = `D${topicNum}`;
+				if (framework.discussions[key]) {
+					(textarea as HTMLTextAreaElement).value = framework.discussions[key];
+				}
+			});
+		}
+
+		// Load contract
+		if (framework.contract) {
+			Object.entries(contractFields).forEach(([key, field]) => {
+				const contractKey = key as keyof typeof framework.contract;
+				const value = framework.contract[contractKey];
+				if (value && field) {
+					(field as HTMLInputElement | HTMLTextAreaElement).value = value;
+				}
+			});
+		}
+	}
+
+	// Load from localStorage (fallback)
+	function loadFromLocalStorage() {
+		// Load selected model
+		const savedModel = localStorage.getItem('selectedModel');
+		if (savedModel) {
+			const savedCard = document.querySelector(`[data-model="${savedModel}"]`);
+			if (savedCard) {
+				(savedCard as HTMLElement).click();
+			}
+		}
+
+		// Load discussions
+		document.querySelectorAll('.topic-worksheet textarea').forEach((textarea, index) => {
+			const topicNum = index + 1;
+			const saved = localStorage.getItem(`discussion-D${topicNum}`);
+			if (saved) {
+				(textarea as HTMLTextAreaElement).value = saved;
+			}
+		});
+
+		// Load contract
+		Object.entries(contractFields).forEach(([key, field]) => {
+			const saved = localStorage.getItem(`contract-${key}`);
+			if (saved && field) {
+				(field as HTMLInputElement | HTMLTextAreaElement).value = saved;
+			}
+		});
+	}
+
+	// Model Selection
+	const modelCards = document.querySelectorAll('.model-card');
+	const modelDetails = document.getElementById('model-details');
+	const modelContent = document.getElementById('model-content');
+	const resetButton = document.getElementById('reset-model');
+
+	const modelDescriptions: Record<string, string> = {
+		1: `
+			<h4>Model 1: Tradisional Fungsional</h4>
+			<p><strong>Cocok untuk:</strong> Pasangan yang ingin struktur klasik dengan pembagian peran jelas.</p>
+			<h5>Detail Implementasi:</h5>
+			<ul>
+				<li><strong>Suami sebagai PIC Eksternal:</strong> Keamanan rumah, krisis finansial, nafkah utama, relasi eksternal</li>
+				<li><strong>Istri sebagai PIC Internal:</strong> Pengasuhan anak, pengelolaan rumah, budaya keluarga, pendidikan</li>
+				<li><strong>Keputusan Strategis:</strong> Investasi besar, pindah rumah, pendidikan anak - diputuskan bersama</li>
+				<li><strong>Mode Krisis:</strong> Suami memimpin untuk krisis eksternal, istri untuk krisis internal</li>
+			</ul>
+			<h5>Syarat Agar Adil:</h5>
+			<ul>
+				<li>Kerja domestik istri harus dihargai setara dengan kerja nafkah suami</li>
+				<li>Transparansi keuangan wajib - istri tahu kondisi finansi keluarga</li>
+				<li>Istri punya hak veto untuk keputusan yang menyangkut keselamatan anak</li>
+				<li>Review berkala untuk memastikan tidak ada overload di satu pihak</li>
+			</ul>
+		`,
+		2: `
+			<h4>Model 2: Hybrid Kapasitas</h4>
+			<p><strong>Cocok untuk:</strong> Pasangan modern yang keduanya bekerja atau situasi yang dinamis.</p>
+			<h5>Detail Implementasi:</h5>
+			<ul>
+				<li><strong>PIC Fleksibel:</strong> Peran berubah sesuai kapasitas, jam kerja, dan fase hidup</li>
+				<li><strong>Contoh:</strong> Jika istri lembur, suami ambil alih domestik. Jika suami sakit, istri handle krisis.</li>
+				<li><strong>Keputusan Strategis:</strong> Selalu bersama dengan transparansi penuh</li>
+				<li><strong>Mode Krisis:</strong> Ditentukan berdasarkan siapa yang paling capable saat itu</li>
+			</ul>
+			<h5>Kunci Keberhasilan:</h5>
+			<ul>
+				<li>Komunikasi intensif - review mingguan wajib</li>
+				<li>Pembagian mental load yang jelas (siapa yang "mengatur sistem")</li>
+				<li>Apresiasi timbal balik untuk menghindari iri atau merasa tidak dihargai</li>
+				<li>Fleksibilitas tanpa eksploitasi - ada batas beban yang wajar</li>
+			</ul>
+		`,
+		3: `
+			<h4>Model 3: Dual-Leadership</h4>
+			<p><strong>Cocok untuk:</strong> Pasangan dengan kesetaraan penuh dan keduanya memiliki kapasitas kuat.</p>
+			<h5>Detail Implementasi:</h5>
+			<ul>
+				<li><strong>Kepemimpinan Sejajar:</strong> Kedua pihak memimpin domain berbeda dengan otoritas penuh</li>
+				<li><strong>Contoh:</strong> Suami memimpin keuangan & investasi, istri memimpin pendidikan & kesehatan</li>
+				<li><strong>Veto Keselamatan:</strong> Keduanya punya hak veto untuk keputusan yang berisiko</li>
+				<li><strong>Transparansi Total:</strong> Semua keputusan besar dikomunikasikan sebelum eksekusi</li>
+			</ul>
+			<h5>Tantangan & Solusi:</h5>
+			<ul>
+				<li><strong>Konflik Kepentingan:</strong> Butuh protokol penyelesaian konflik yang jelas</li>
+				<li><strong>Ego & Kompetisi:</strong> Fokus pada tujuan keluarga, bukan siapa yang menang</li>
+				<li><strong>Overload Bersama:</strong> Perlu sistem support eksternal (ART, daycare, keluarga)</li>
+			</ul>
+		`,
+		4: `
+			<h4>Model 4: Rotasi Peran</h4>
+			<p><strong>Cocok untuk:</strong> Fase hidup tertentu yang memerlukan fokus berbeda (hamil, anak kecil, bangun bisnis).</p>
+			<h5>Detail Implementasi:</h5>
+			<ul>
+				<li><strong>Fase Hamil & 0-2 Tahun:</strong> Istri fokus pengasuhan, suami ambil alih domestik & nafkah</li>
+				<li><strong>Fase Bangun Bisnis:</strong> Salah satu fokus karier, yang lain support domestik</li>
+				<li><strong>Fase Sekolah:</strong> Bisa rotasi siapa yang fokus pendampingan anak</li>
+				<li><strong>Kembali ke Model Default:</strong> Setelah fase selesai, kembali ke kesepakatan awal</li>
+			</ul>
+			<h5>Kunci Keberhasilan:</h5>
+			<ul>
+				<li>Kesepakatan durasi yang jelas - berapa lama rotasi berlangsung</li>
+				<li>Kompensasi untuk pihak yang "mengorbankan" fokus karier</li>
+				<li>Review bulanan untuk memastikan beban masih wajar</li>
+				<li>Rencana transisi kembali ke model normal</li>
+			</ul>
+		`
+	};
+
+	modelCards.forEach(card => {
+		card.addEventListener('click', function(this: HTMLElement) {
+			const modelNum = this.dataset.model;
+			
+			// Remove previous selection
+			modelCards.forEach(c => c.classList.remove('selected'));
+			
+			// Add selection
+			this.classList.add('selected');
+			
+			// Show details
+			if (modelContent && modelNum) {
+				modelContent.innerHTML = modelDescriptions[modelNum];
+			}
+			modelDetails?.classList.remove('hidden');
+			
+			// Scroll to details
+			modelDetails?.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+			
+			// Save to Firestore/localStorage
+			if (modelNum) {
+				saveToFirestore({ selectedModel: modelNum });
+			}
+		});
+	});
+
+	// Model buttons - direct navigation to discussion
+	const modelButtons = document.querySelectorAll('.model-btn');
+	modelButtons.forEach(btn => {
+		btn.addEventListener('click', function(this: HTMLElement, e: Event) {
+			e.stopPropagation(); // Prevent card click
+			const modelNum = this.dataset.model;
+			
+			if (modelNum) {
+				// Select the model card
+				modelCards.forEach(c => c.classList.remove('selected'));
+				const selectedCard = document.querySelector(`[data-model="${modelNum}"].model-card`);
+				selectedCard?.classList.add('selected');
+				
+				// Save model selection
+				saveToFirestore({ selectedModel: modelNum });
+				
+				// Navigate to discussion section
+				setTimeout(() => {
+					document.getElementById('discussion')?.scrollIntoView({ behavior: 'smooth' });
+				}, 300);
+			}
+		});
+	});
+
+	resetButton?.addEventListener('click', function() {
+		modelCards.forEach(c => c.classList.remove('selected'));
+		modelDetails?.classList.add('hidden');
+		saveToFirestore({ selectedModel: null });
+		
+		// Scroll back to models
+		document.getElementById('models')?.scrollIntoView({ behavior: 'smooth' });
+	});
+
+	// Save discussion agreements
+	const saveButtons = document.querySelectorAll('.save-btn');
+	saveButtons.forEach((btn, index) => {
+		btn.addEventListener('click', function(this: HTMLElement) {
+			const textarea = this.previousElementSibling as HTMLTextAreaElement;
+			const topicNum = index + 1;
+			const key = `D${topicNum}`;
+			const value = textarea?.value || '';
+			
+			// Save to Firestore/localStorage
+			saveToFirestore({
+				discussions: {
+					[key]: value
+				}
+			});
+			
+			// Show feedback
+			const originalText = this.textContent;
+			const saveBtn = this;
+			saveBtn.textContent = '✓ Tersimpan!';
+			saveBtn.style.background = 'var(--success)';
+			
+			setTimeout(() => {
+				saveBtn.textContent = originalText || 'Simpan Kesepakatan';
+				saveBtn.style.background = '';
+			}, 2000);
+		});
+	});
+
+	// Contract functionality
+	const contractFields: Record<string, HTMLInputElement | HTMLTextAreaElement | null> = {
+		model: document.getElementById('contract-model') as HTMLInputElement,
+		husband: document.getElementById('contract-husband') as HTMLTextAreaElement,
+		wife: document.getElementById('contract-wife') as HTMLTextAreaElement,
+		rules: document.getElementById('contract-rules') as HTMLTextAreaElement,
+		transparency: document.getElementById('contract-transparency') as HTMLTextAreaElement,
+		crisis: document.getElementById('contract-crisis') as HTMLTextAreaElement,
+		review: document.getElementById('contract-review') as HTMLInputElement
+	};
+
+	// Auto-save contract fields with debounce
+	let saveTimeout: number;
+	Object.entries(contractFields).forEach(([key, field]) => {
+		field?.addEventListener('input', function() {
+			clearTimeout(saveTimeout);
+			saveTimeout = window.setTimeout(() => {
+				const contract: Record<string, string> = {};
+				Object.entries(contractFields).forEach(([k, f]) => {
+					contract[k] = (f as HTMLInputElement | HTMLTextAreaElement)?.value || '';
+				});
+				saveToFirestore({ contract });
+			}, 1000); // Debounce 1 second
+		});
+	});
+
+	// Save contract button (explicit save)
+	document.getElementById('save-contract')?.addEventListener('click', function() {
+		const contract: Record<string, string> = {};
+		Object.entries(contractFields).forEach(([key, field]) => {
+			contract[key] = (field as HTMLInputElement | HTMLTextAreaElement)?.value || '';
+		});
+		
+		saveToFirestore({ contract });
+		
+		// Feedback
+		const originalText = (this as HTMLElement).textContent;
+		(this as HTMLElement).textContent = '✓ Kontrak Tersimpan!';
+		(this as HTMLElement).style.background = 'var(--success)';
+		
+		setTimeout(() => {
+			(this as HTMLElement).textContent = originalText || 'Simpan Kontrak';
+			(this as HTMLElement).style.background = '';
+		}, 2000);
+	});
+
+	// Download PDF (simple text version)
+	document.getElementById('download-contract')?.addEventListener('click', function() {
+		const contract: Record<string, string> = {};
+		Object.entries(contractFields).forEach(([key, field]) => {
+			contract[key] = (field as HTMLInputElement | HTMLTextAreaElement)?.value || '';
+		});
+		
+		let textContent = 'KONTRAK KEADILAN KELUARGA\n\n';
+		textContent += `1. Model default kami: ${contract.model}\n\n`;
+		textContent += `2. PIC domain suami: ${contract.husband}\n\n`;
+		textContent += `3. PIC domain istri: ${contract.wife}\n\n`;
+		textContent += `4. Hal yang tidak boleh dilanggar:\n${contract.rules}\n\n`;
+		textContent += `5. Transparansi wajib:\n${contract.transparency}\n\n`;
+		textContent += `6. Mode krisis:\n${contract.crisis}\n\n`;
+		textContent += `7. Jadwal review: ${contract.review}\n\n`;
+		textContent += `\nDitandatangani pada: ${new Date().toLocaleDateString('id-ID')}\n`;
+		
+		const blob = new Blob([textContent], { type: 'text/plain' });
+		const url = URL.createObjectURL(blob);
+		const a = document.createElement('a');
+		a.href = url;
+		a.download = 'kontrak-keadilan-keluarga.txt';
+		a.click();
+		URL.revokeObjectURL(url);
+	});
+
+	// Print contract
+	document.getElementById('print-contract')?.addEventListener('click', function() {
+		window.print();
+	});
+</script>

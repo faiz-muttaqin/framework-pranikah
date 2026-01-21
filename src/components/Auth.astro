@@ -1,0 +1,632 @@
+---
+// This is a client-side component for authentication
+---
+
+<div id="auth-container">
+  <div id="auth-loading" class="auth-state">
+    <div class="spinner"></div>
+    <p>Memuat...</p>
+  </div>
+  
+  <div id="auth-logged-out" class="auth-state" style="display: none;">
+    <div class="auth-card">
+      <h2>🔐 Login untuk Menyimpan Progress</h2>
+      <p>Login dengan Google untuk menyimpan diskusi pra-nikah Anda dan berbagi dengan pasangan.</p>
+      <button id="google-login-btn" class="btn btn-primary">
+        <svg width="18" height="18" viewBox="0 0 18 18" style="margin-right: 8px;">
+          <path fill="#4285F4" d="M17.64 9.2c0-.637-.057-1.251-.164-1.84H9v3.481h4.844c-.209 1.125-.843 2.078-1.796 2.717v2.258h2.908c1.702-1.567 2.684-3.874 2.684-6.615z"/>
+          <path fill="#34A853" d="M9 18c2.43 0 4.467-.806 5.956-2.18l-2.908-2.259c-.806.54-1.837.86-3.048.86-2.344 0-4.328-1.584-5.036-3.711H.957v2.332C2.438 15.983 5.482 18 9 18z"/>
+          <path fill="#FBBC05" d="M3.964 10.71c-.18-.54-.282-1.117-.282-1.71s.102-1.17.282-1.71V4.958H.957C.347 6.173 0 7.548 0 9s.348 2.827.957 4.042l3.007-2.332z"/>
+          <path fill="#EA4335" d="M9 3.58c1.321 0 2.508.454 3.44 1.345l2.582-2.58C13.463.891 11.426 0 9 0 5.482 0 2.438 2.017.957 4.958L3.964 7.29C4.672 5.163 6.656 3.58 9 3.58z"/>
+        </svg>
+        Login dengan Google
+      </button>
+      <p class="auth-note">
+        Data Anda akan disimpan secara aman di Firebase Firestore dan hanya dapat diakses oleh Anda dan orang yang Anda izinkan.
+      </p>
+    </div>
+  </div>
+  
+  <div id="auth-logged-in" class="auth-state" style="display: none;">
+    <div class="user-info">
+      <img id="user-avatar" src="" alt="Avatar" class="user-avatar" />
+      <div class="user-details">
+        <p class="user-name" id="user-name"></p>
+        <p class="user-email" id="user-email"></p>
+      </div>
+      <button id="logout-btn" class="btn btn-secondary btn-sm">Logout</button>
+    </div>
+    
+    <!-- Framework Selection -->
+    <div id="framework-selection">
+      <div class="framework-actions">
+        <button id="create-new-framework-btn" class="btn btn-primary">
+          📝 Mulai Diskusi Baru
+        </button>
+        <div class="or-divider">atau</div>
+        <div class="share-link-section">
+          <h4>Bagikan Link dengan Pasangan:</h4>
+          <div class="share-link-container">
+            <input type="text" id="share-link-input" readonly class="share-link-input" />
+            <button id="copy-link-btn" class="btn btn-outline btn-sm">📋 Salin</button>
+          </div>
+          <p class="share-note">Kirim link ini kepada pasangan Anda agar mereka bisa berkolaborasi.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Collaborators Management -->
+    <div id="collaborators-section" style="display: none;">
+      <h3>👥 Kolaborator</h3>
+      <div id="collaborators-list"></div>
+      <div class="add-collaborator-form">
+        <input 
+          type="email" 
+          id="collaborator-email-input" 
+          placeholder="Email pasangan (yang sudah login dengan Google)"
+          class="form-input"
+        />
+        <button id="add-collaborator-btn" class="btn btn-primary btn-sm">Tambah</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+  #auth-container {
+    background: white;
+    border-radius: 12px;
+    padding: 2rem;
+    margin: 2rem 0;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.1);
+  }
+
+  .auth-state {
+    text-align: center;
+  }
+
+  .spinner {
+    width: 40px;
+    height: 40px;
+    border: 4px solid var(--border);
+    border-top-color: var(--primary);
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin: 0 auto 1rem;
+  }
+
+  @keyframes spin {
+    to { transform: rotate(360deg); }
+  }
+
+  .auth-card {
+    max-width: 500px;
+    margin: 0 auto;
+  }
+
+  .auth-card h2 {
+    margin-bottom: 1rem;
+    color: var(--text);
+  }
+
+  .auth-card p {
+    color: var(--text-muted);
+    margin-bottom: 1.5rem;
+  }
+
+  #google-login-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: white;
+    color: var(--text);
+    border: 2px solid var(--border);
+    padding: 0.75rem 2rem;
+    font-weight: 600;
+    margin-bottom: 1rem;
+  }
+
+  #google-login-btn:hover {
+    background: var(--bg-alt);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  }
+
+  .auth-note {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    margin-top: 1rem;
+  }
+
+  .user-info {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1rem;
+    background: var(--bg-alt);
+    border-radius: 8px;
+    margin-bottom: 1.5rem;
+  }
+
+  .user-avatar {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    border: 2px solid var(--primary);
+  }
+
+  .user-details {
+    flex: 1;
+    text-align: left;
+  }
+
+  .user-name {
+    font-weight: 600;
+    margin: 0;
+    color: var(--text);
+  }
+
+  .user-email {
+    font-size: 0.85rem;
+    margin: 0;
+    color: var(--text-muted);
+  }
+
+  .btn-sm {
+    padding: 0.5rem 1rem;
+    font-size: 0.9rem;
+  }
+
+  .framework-actions {
+    margin-top: 1.5rem;
+  }
+
+  .or-divider {
+    margin: 1.5rem 0;
+    color: var(--text-muted);
+    position: relative;
+  }
+
+  .or-divider::before,
+  .or-divider::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    width: 45%;
+    height: 1px;
+    background: var(--border);
+  }
+
+  .or-divider::before {
+    left: 0;
+  }
+
+  .or-divider::after {
+    right: 0;
+  }
+
+  .share-link-section {
+    background: var(--bg-alt);
+    padding: 1.5rem;
+    border-radius: 8px;
+    margin-top: 1rem;
+  }
+
+  .share-link-section h4 {
+    margin-bottom: 1rem;
+    color: var(--text);
+    font-size: 1rem;
+  }
+
+  .share-link-container {
+    display: flex;
+    gap: 0.5rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .share-link-input {
+    flex: 1;
+    padding: 0.75rem;
+    border: 2px solid var(--border);
+    border-radius: 8px;
+    font-family: monospace;
+    font-size: 0.9rem;
+    background: white;
+  }
+
+  .share-note {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    margin: 0.5rem 0 0 0;
+  }
+
+  #collaborators-section {
+    margin-top: 2rem;
+    padding-top: 2rem;
+    border-top: 2px solid var(--border);
+  }
+
+  #collaborators-section h3 {
+    margin-bottom: 1rem;
+    color: var(--text);
+  }
+
+  #collaborators-list {
+    margin-bottom: 1rem;
+  }
+
+  .collaborator-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.75rem;
+    background: var(--bg-alt);
+    border-radius: 8px;
+    margin-bottom: 0.5rem;
+  }
+
+  .collaborator-info {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .collaborator-role {
+    font-size: 0.75rem;
+    padding: 0.25rem 0.5rem;
+    background: var(--primary);
+    color: white;
+    border-radius: 4px;
+    font-weight: 600;
+  }
+
+  .add-collaborator-form {
+    display: flex;
+    gap: 0.5rem;
+  }
+
+  .form-input {
+    flex: 1;
+    padding: 0.75rem;
+    border: 2px solid var(--border);
+    border-radius: 8px;
+    font-size: 1rem;
+  }
+
+  .form-input:focus {
+    outline: none;
+    border-color: var(--primary);
+  }
+
+  .alert {
+    padding: 1rem;
+    border-radius: 8px;
+    margin-bottom: 1rem;
+    font-weight: 500;
+  }
+
+  .alert-success {
+    background: #d1fae5;
+    color: #065f46;
+    border: 1px solid #10b981;
+  }
+
+  .alert-error {
+    background: #fee2e2;
+    color: #991b1b;
+    border: 1px solid #ef4444;
+  }
+
+  .alert-info {
+    background: #dbeafe;
+    color: #1e40af;
+    border: 1px solid #3b82f6;
+  }
+
+  @media (max-width: 768px) {
+    #auth-container {
+      padding: 1rem;
+    }
+
+    .user-info {
+      flex-direction: column;
+      text-align: center;
+    }
+
+    .user-details {
+      text-align: center;
+    }
+
+    .share-link-container {
+      flex-direction: column;
+    }
+
+    .add-collaborator-form {
+      flex-direction: column;
+    }
+  }
+</style>
+
+<script>
+  import { 
+    signInWithPopup, 
+    signOut, 
+    onAuthStateChanged,
+    type User 
+  } from 'firebase/auth';
+  import { auth, googleProvider } from '../lib/firebase';
+  import {
+    createFramework,
+    getFramework,
+    subscribeToFramework,
+    addCollaborator,
+    removeCollaborator,
+    hasAccess,
+    isOwner,
+    type FrameworkData
+  } from '../lib/firestore';
+
+  // State
+  let currentUser: User | null = null;
+  let currentFramework: FrameworkData | null = null;
+  let unsubscribe: (() => void) | null = null;
+
+  // DOM Elements
+  const authLoading = document.getElementById('auth-loading');
+  const authLoggedOut = document.getElementById('auth-logged-out');
+  const authLoggedIn = document.getElementById('auth-logged-in');
+  const googleLoginBtn = document.getElementById('google-login-btn');
+  const logoutBtn = document.getElementById('logout-btn');
+  const userAvatar = document.getElementById('user-avatar') as HTMLImageElement;
+  const userName = document.getElementById('user-name');
+  const userEmail = document.getElementById('user-email');
+  const createNewFrameworkBtn = document.getElementById('create-new-framework-btn');
+  const shareLinkInput = document.getElementById('share-link-input') as HTMLInputElement;
+  const copyLinkBtn = document.getElementById('copy-link-btn');
+  const collaboratorsSection = document.getElementById('collaborators-section');
+  const collaboratorsList = document.getElementById('collaborators-list');
+  const collaboratorEmailInput = document.getElementById('collaborator-email-input') as HTMLInputElement;
+  const addCollaboratorBtn = document.getElementById('add-collaborator-btn');
+
+  // Show/hide auth states
+  function showAuthState(state: 'loading' | 'logged-out' | 'logged-in') {
+    authLoading!.style.display = state === 'loading' ? 'block' : 'none';
+    authLoggedOut!.style.display = state === 'logged-out' ? 'block' : 'none';
+    authLoggedIn!.style.display = state === 'logged-in' ? 'block' : 'none';
+  }
+
+  // Show alert
+  function showAlert(message: string, type: 'success' | 'error' | 'info' = 'info') {
+    const alert = document.createElement('div');
+    alert.className = `alert alert-${type}`;
+    alert.textContent = message;
+    
+    const container = document.getElementById('auth-container');
+    container?.insertBefore(alert, container.firstChild);
+    
+    setTimeout(() => alert.remove(), 5000);
+  }
+
+  // Google Login
+  googleLoginBtn?.addEventListener('click', async () => {
+    try {
+      await signInWithPopup(auth, googleProvider);
+      showAlert('Login berhasil!', 'success');
+    } catch (error: any) {
+      console.error('Login error:', error);
+      showAlert('Gagal login: ' + error.message, 'error');
+    }
+  });
+
+  // Logout
+  logoutBtn?.addEventListener('click', async () => {
+    try {
+      await signOut(auth);
+      if (unsubscribe) {
+        unsubscribe();
+        unsubscribe = null;
+      }
+      currentFramework = null;
+      showAlert('Logout berhasil!', 'success');
+    } catch (error: any) {
+      console.error('Logout error:', error);
+      showAlert('Gagal logout: ' + error.message, 'error');
+    }
+  });
+
+  // Create new framework
+  createNewFrameworkBtn?.addEventListener('click', async () => {
+    if (!currentUser) return;
+    
+    try {
+      const frameworkId = await createFramework(
+        currentUser.uid,
+        currentUser.email!,
+        currentUser.displayName || 'User'
+      );
+      
+      // Update URL with framework ID
+      window.history.pushState({}, '', `?fw=${frameworkId}`);
+      
+      // Load the framework
+      loadFramework(frameworkId);
+      
+      showAlert('Diskusi baru berhasil dibuat!', 'success');
+    } catch (error: any) {
+      console.error('Create framework error:', error);
+      showAlert('Gagal membuat diskusi: ' + error.message, 'error');
+    }
+  });
+
+  // Copy share link
+  copyLinkBtn?.addEventListener('click', () => {
+    shareLinkInput?.select();
+    document.execCommand('copy');
+    showAlert('Link berhasil disalin!', 'success');
+  });
+
+  // Add collaborator
+  addCollaboratorBtn?.addEventListener('click', async () => {
+    const email = collaboratorEmailInput?.value.trim();
+    
+    if (!email) {
+      showAlert('Masukkan email kolaborator', 'error');
+      return;
+    }
+    
+    if (!currentFramework) {
+      showAlert('Belum ada framework aktif', 'error');
+      return;
+    }
+    
+    if (!isOwner(currentFramework, currentUser?.email || '')) {
+      showAlert('Hanya pemilik yang bisa menambah kolaborator', 'error');
+      return;
+    }
+    
+    try {
+      await addCollaborator(currentFramework.id, email, email);
+      collaboratorEmailInput!.value = '';
+      showAlert('Kolaborator berhasil ditambahkan!', 'success');
+    } catch (error: any) {
+      console.error('Add collaborator error:', error);
+      showAlert('Gagal menambah kolaborator: ' + error.message, 'error');
+    }
+  });
+
+  // Load framework
+  async function loadFramework(frameworkId: string) {
+    if (unsubscribe) {
+      unsubscribe();
+    }
+    
+    unsubscribe = subscribeToFramework(frameworkId, (framework) => {
+      if (!framework) {
+        showAlert('Framework tidak ditemukan', 'error');
+        return;
+      }
+      
+      if (!hasAccess(framework, currentUser?.email || '')) {
+        showAlert('Anda tidak memiliki akses ke framework ini', 'error');
+        return;
+      }
+      
+      currentFramework = framework;
+      
+      // Update UI
+      updateFrameworkUI(framework);
+      
+      // Dispatch event for other components
+      window.dispatchEvent(new CustomEvent('frameworkLoaded', { detail: framework }));
+    });
+  }
+
+  // Update framework UI
+  function updateFrameworkUI(framework: FrameworkData) {
+    // Update share link
+    const shareLink = `${window.location.origin}${window.location.pathname}?fw=${framework.id}`;
+    if (shareLinkInput) {
+      shareLinkInput.value = shareLink;
+    }
+    
+    // Update collaborators
+    if (collaboratorsSection && collaboratorsList) {
+      collaboratorsSection.style.display = 'block';
+      
+      const isUserOwner = isOwner(framework, currentUser?.email || '');
+      
+      let html = '';
+      
+      // Owner
+      html += `
+        <div class="collaborator-item">
+          <div class="collaborator-info">
+            <span class="collaborator-role">PEMILIK</span>
+            <span>${framework.ownerEmail}</span>
+          </div>
+        </div>
+      `;
+      
+      // Collaborators
+      framework.collaborators.forEach((collab) => {
+        html += `
+          <div class="collaborator-item">
+            <div class="collaborator-info">
+              <span class="collaborator-role">KOLABORATOR</span>
+              <span>${collab.email}</span>
+            </div>
+            ${isUserOwner ? `
+              <button class="btn btn-secondary btn-sm remove-collab-btn" data-email="${collab.email}">
+                Hapus
+              </button>
+            ` : ''}
+          </div>
+        `;
+      });
+      
+      collaboratorsList.innerHTML = html;
+      
+      // Add remove handlers
+      document.querySelectorAll('.remove-collab-btn').forEach(btn => {
+        btn.addEventListener('click', async (e) => {
+          const email = (e.target as HTMLElement).getAttribute('data-email');
+          if (email && currentFramework) {
+            try {
+              await removeCollaborator(currentFramework.id, email);
+              showAlert('Kolaborator berhasil dihapus', 'success');
+            } catch (error: any) {
+              showAlert('Gagal menghapus kolaborator: ' + error.message, 'error');
+            }
+          }
+        });
+      });
+      
+      // Show/hide add form based on owner
+      const addForm = document.querySelector('.add-collaborator-form') as HTMLElement;
+      if (addForm) {
+        addForm.style.display = isUserOwner ? 'flex' : 'none';
+      }
+    }
+  }
+
+  // Auth state observer
+  onAuthStateChanged(auth, (user) => {
+    currentUser = user;
+    
+    if (user) {
+      showAuthState('logged-in');
+      
+      // Update user info
+      if (userAvatar && user.photoURL) {
+        userAvatar.src = user.photoURL;
+      }
+      if (userName) {
+        userName.textContent = user.displayName || 'User';
+      }
+      if (userEmail) {
+        userEmail.textContent = user.email || '';
+      }
+      
+      // Check URL for framework ID
+      const urlParams = new URLSearchParams(window.location.search);
+      const frameworkId = urlParams.get('fw');
+      
+      if (frameworkId) {
+        loadFramework(frameworkId);
+      }
+    } else {
+      showAuthState('logged-out');
+      
+      if (unsubscribe) {
+        unsubscribe();
+        unsubscribe = null;
+      }
+      
+      currentFramework = null;
+    }
+  });
+
+  // Export for use in other scripts
+  (window as any).getCurrentFramework = () => currentFramework;
+  (window as any).getCurrentUser = () => currentUser;
+</script>
