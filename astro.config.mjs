@@ -5,7 +5,7 @@ import { defineConfig } from "astro/config";
 export default defineConfig({
 	site: "https://faiz-muttaqin.github.io",
 	base: "/framework-pranikah",
-	outDir: "./docs",
+	outDir: "./dist",
 	build: {
 		assets: "assets",
 	},
